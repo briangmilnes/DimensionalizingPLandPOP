@@ -1,3 +1,11 @@
+<style>
+body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
+  max-width: 95% !important;
+  width: 95% !important;
+  margin: 0 auto;
+}
+</style>
+
 # Typing Dimensions
 
 A deeper cut on the type systems of the eleven languages in `ElevenPLs.md`:
