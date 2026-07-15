@@ -41,5 +41,5 @@ Reading of the value ladders:
 | 1 | GC tagging | boxed | none | none | headers | headers | boxed | boxed | none | boxed | tagged | tagged |
 | 2 | Low-level | none | full | full | partial | partial | none | none | full | none | partial | none |
 | 3 | Null vs option | null | null | null | null | null | null | null | option | null | option | option |
-| 4 | Data types | structs | enums | ADT | ADT | enums | structs | ADT | ADT | structs | GADT | ADT |
+| 4 | Data types | structs | enums | enums | enums | enums | structs | ADT | ADT | structs | GADT | ADT |
 | 5 | Polymorphism | poly | mono | templ | poly | poly | poly | poly | typeclasses | poly | typeclasses | poly |

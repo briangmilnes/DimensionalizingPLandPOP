@@ -52,7 +52,7 @@ obj = objects.
 | 4 | Strength | strong | weak | weak | strong | strong | weak | strong | strong | strong | strong | strong |
 | 5 | Type inference | none | none | local | local | local | none | local | local | none | global | global |
 | 6 | Nom/struct | duck | nom | nom | nom | nom | duck | struct | nom | duck | nom | nom |
-| 7 | ADTs | enum | enum | enum | ADT | enum | no | ADT | ADT | no | GADT | ADT |
+| 7 | ADTs | enum | enum | enum | enum | enum | no | ADT | ADT | no | GADT | ADT |
 | 8 | Subtyping | no | no | yes | yes | yes | no | yes | no | no | no | no |
 | 9 | Polymorphism | dyn | monom | gen | gen | gen | dyn | gen | gen | dyn | gen | gen |
 | 10 | Memory | GC | manual | RAII | GC | GC | GC | GC | borrow | GC | GC | GC |
