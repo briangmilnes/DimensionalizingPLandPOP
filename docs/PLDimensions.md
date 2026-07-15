@@ -20,7 +20,7 @@ and the duck-typing cell is `duck`.
 | 8 | Polymorphism | monomorphic / generics / ad-hoc |
 | 9 | Memory management | manual / RAII / GC / borrow |
 | 10 | Mutability default | mutable / immutable |
-| 11 | Purity / effects | pure / impure |
+| 11 | Pure fns | yes / no |
 | 12 | Paradigm | procedural / OO / functional / multi |
 | 13 | First-class functions | yes / pointers |
 | 14 | Error handling | exceptions / values / codes |
@@ -36,13 +36,13 @@ and the duck-typing cell is `duck`.
 | 2 | Evaluation | eager | eager | eager | eager | eager | eager | eager | eager | eager | lazy | eager |
 | 3 | Typing | dynamic | static | static | static | static | dynamic | static | static | dynamic | static | static |
 | 4 | Strength | strong | weak | weak | strong | strong | weak | strong | strong | strong | strong | strong |
-| 5 | Inference | none | none | local | local | local | none | local | local | none | global | global |
+| 5 | Type inference | none | none | local | local | local | none | local | local | none | global | global |
 | 6 | Nom/struct | duck | nominal | nominal | nominal | nominal | duck | structural | nominal | duck | nominal | nominal |
 | 7 | Subtyping | no | no | yes | yes | yes | no | yes | no | no | no | no |
 | 8 | Polymorphism | dynamic | monomorphic | generics | generics | generics | dynamic | generics | generics | dynamic | generics | generics |
 | 9 | Memory | GC | manual | RAII | GC | GC | GC | GC | borrow | GC | GC | GC |
 | 10 | Mutability | mutable | mutable | mutable | mutable | mutable | mutable | mutable | immutable | mutable | immutable | immutable |
-| 11 | Purity | impure | impure | impure | impure | impure | impure | impure | impure | impure | pure | impure |
+| 11 | Pure fns | no | no | no | no | no | no | no | no | no | yes | no |
 | 12 | Paradigm | multi | procedural | multi | OO | multi | multi | multi | multi | multi | functional | functional |
 | 13 | First-class fns | yes | pointers | yes | yes | yes | yes | yes | yes | yes | yes | yes |
 | 14 | Errors | exceptions | codes | exceptions | exceptions | exceptions | exceptions | exceptions | values | exceptions | values | exceptions |
