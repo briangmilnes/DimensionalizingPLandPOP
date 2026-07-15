@@ -11,10 +11,18 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 Satisfiability-modulo-theories solvers decide the satisfiability of quantifier-free
 (and, with instantiation, quantified) first-order formulas over background theories
 such as fixed-size bit-vectors, arrays, linear and nonlinear arithmetic, and
-uninterpreted functions. This document records eleven solvers on four attributes:
+uninterpreted functions. This document records eleven solvers on five attributes:
 the language the solver itself is written in, whether its core reasoning engine is
-formally verified, whether it emits a checkable proof certificate, and whether a
-formally verified checker exists for that certificate.
+formally verified, whether it emits a checkable proof certificate, whether a
+formally verified checker exists for that certificate, and a coarse ordinal
+`SMT-COMP standing` derived from recent SMT-COMP division results (2023–2025).
+
+There is no fair single-number measure of SMT solver speed. SMT-COMP reports
+per-division standings, not an overall ranking, and performance is theory- and
+timeout-dependent: a solver that leads one division can place mid-pack or lower in
+another. The `SMT-COMP standing` column is therefore a coarse summary of breadth of
+recent division wins and podiums, and the real signal — which theories each solver
+leads — is recorded per solver in the Notes.
 
 The single most important observation is the `Kernel verified` column. No production
 SMT solver listed here has a formally verified kernel: every entry reads `no`.
@@ -45,19 +53,19 @@ certificate to check.
 
 ## The Eleven Solvers
 
-| Solver | Implementation language | Kernel verified | Certificate | Verified checker |
-|--------|-------------------------|-----------------|-------------|------------------|
-| Z3 | C++ | no | yes | yes |
-| cvc5 | C++ | no | yes | yes |
-| Yices2 | C | no | partial | no |
-| MathSAT5 | C++ | no | yes | no |
-| Bitwuzla | C++ | no | partial | no |
-| veriT | C | no | yes | yes |
-| SMTInterpol | Java | no | yes | no |
-| Alt-Ergo | OCaml | no | partial | no |
-| OpenSMT | C++ | no | yes | no |
-| STP | C++ | no | no | no |
-| Colibri2 | OCaml | no | no | no |
+| Solver | Implementation language | Kernel verified | Certificate | Verified checker | SMT-COMP standing |
+|--------|-------------------------|-----------------|-------------|------------------|-------------------|
+| Z3 | C++ | no | yes | yes | broad-leader |
+| cvc5 | C++ | no | yes | yes | broad-leader |
+| Yices2 | C | no | partial | no | division-leader |
+| MathSAT5 | C++ | no | yes | no | mid-pack |
+| Bitwuzla | C++ | no | partial | no | division-leader |
+| veriT | C | no | yes | yes | niche |
+| SMTInterpol | Java | no | yes | no | division-leader |
+| Alt-Ergo | OCaml | no | partial | no | niche |
+| OpenSMT | C++ | no | yes | no | division-leader |
+| STP | C++ | no | no | no | niche |
+| Colibri2 | OCaml | no | no | no | niche |
 
 ## Notes
 
@@ -84,6 +92,43 @@ principal checkers and formats:
   these are exactly the three solvers whose `Verified checker` cell reads `yes`. The
   per-solver certificate formats named above (Alethe, LFSC, own resolution formats,
   etc.) are what each `Certificate` cell refers to.
+
+On the `SMT-COMP standing` column: the tier is a coarse ordinal summary of how widely
+a solver won or reached the podium across SMT-COMP 2023–2025 single-query divisions,
+not a universal speed number. The vocabulary has four levels. `broad-leader` marks a
+solver that wins divisions across many distinct theories; `division-leader` marks a
+solver that leads one or a few specific divisions; `mid-pack` marks a competitive
+participant that recently won no division; `niche` marks a solver aimed at a specific
+use that is not a recent front-runner in the open competition. Every value traces to
+observed division results, and each solver's specific strengths are:
+
+- **Z3** and **cvc5** are the broad front-runners. cvc5 won the most single-query
+  divisions in both 2024 and 2025, spanning quantified and quantifier-free arithmetic,
+  bit-vectors, equality, and datatypes; Z3 (and its tuned variants Z3-alpha and
+  Z3-Noodler) led the arithmetic, nonlinear-arithmetic, and string divisions. These
+  two cover the widest range of theories.
+- **Bitwuzla** is the leader in the bit-vector and floating-point divisions —
+  `QF_Bitvec`, `QF_Equality_Bitvec`, `FPArith`, and `QF_FPArith` — where it and its
+  variants took first place in 2024 and 2025. Its coverage is narrower than Z3/cvc5
+  (bit-vectors, floating-point, arrays, uninterpreted functions), so it is a dominant
+  division-leader rather than a broad-leader.
+- **Yices2** is fast on quantifier-free fragments: it led `QF_Equality`,
+  `QF_Equality_NonLinearArith`, and `QF_LinearRealArith`, consistent with its
+  reputation for speed on quantifier-free linear-arithmetic and bit-vector problems.
+- **OpenSMT** leads the quantifier-free linear-arithmetic divisions
+  (`QF_LinearIntArith`, `QF_LinearRealArith`), and **SMTInterpol** leads
+  `QF_Equality_LinearArith`; both are division-leaders confined to those fragments.
+- **MathSAT5** is a mature, competitive solver — strong in incremental solving and
+  interpolation — but won no single-query division in 2024–2025, hence `mid-pack`.
+- **veriT**, **Alt-Ergo**, **STP**, and **Colibri2** are `niche`: veriT is primarily a
+  proof-producing solver, Alt-Ergo targets the Why3/SPARK/Frama-C toolchains, STP
+  targets bit-vectors and arrays for symbolic-execution tools, and Colibri2 targets
+  floating-point and embedded reasoning. None is a recent SMT-COMP division front-runner.
+
+The caveat bears repeating: SMT-COMP standings and solving speed are division- and
+benchmark-dependent. A solver that leads one theory can be weak in another, and the
+per-division winners shift year to year, so treat the tier as a summary of breadth of
+recent competitive results, not a portable speed measurement.
 
 Per-solver details:
 
@@ -147,3 +192,4 @@ the table is unverified and relies on the certificate-plus-checker path for trus
 - Carcara Alethe checker — https://link.springer.com/chapter/10.1007/978-3-031-30823-9_19
 - SMTCoq — https://smtcoq.github.io/capi.html
 - DRAT-based bit-vector proofs — https://arxiv.org/abs/1907.00087 ; CoqQFBV certified QF_BV solver — https://link.springer.com/chapter/10.1007/978-3-030-81688-9_7
+- SMT-COMP division results (basis for the `SMT-COMP standing` column) — 2025 single-query results https://smt-comp.github.io/2025/results/results-single-query/ ; 2024 single-query results https://smt-comp.github.io/2024/results/results-single-query/ ; 2024 largest-contribution ranking https://smt-comp.github.io/2024/results/largest-contribution-single-query/ ; 2023 competition slides https://smt-workshop.cs.uiowa.edu/2023/slides/smtcomp.pdf ; results index https://smt-comp.github.io/2024/results/
