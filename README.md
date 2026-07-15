@@ -16,14 +16,14 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
  programming languages should be far less than 'Wicked' perhaps a 'Technical
  Challenge' types of problem [Problem Structuring Difficulty](https://en.wikipedia.org/wiki/Problem_structuring_methods#Types_of_situations_that_call_for_PSMs). 
  
-  Here we start with eleven interesting and/or popular programming languages and
+  Here we start with thirteen interesting and/or popular programming languages and
  then dimensionalize them along a set of dimensions. 
 
 ## Documents
 
 | # | Document | Covers |
 |---|----------|--------|
-| 1 | [ElevenPLs.md](docs/ElevenPLs.md) | Eleven programming languages basic dimensional properties |
+| 1 | [ElevenPLs.md](docs/ElevenPLs.md) | Thirteen programming languages basic dimensional properties |
 | 2 | [PLDimensions.md](docs/PLDimensions.md) | The dimensions along which programming languages vary |
 | 3 | [TypingDimensions.md](docs/TypingDimensions.md) | Type systems: GC tagging, low-level, null/option, ADTs, polymorphism |
 | 4 | [ModularityDimensions.md](docs/ModularityDimensions.md) | Modularity broken into base modules, signatures, functors, typeclasses |

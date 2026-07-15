@@ -8,7 +8,7 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 
 # Typing Dimensions
 
-A deeper cut on the type systems of the eleven languages in `ElevenPLs.md`:
+A deeper cut on the type systems of the thirteen languages in `ElevenPLs.md`:
 runtime tagging for GC, low-level expressibility, the null/option split, the
 algebraic-data-type ladder, and the polymorphism mechanism.
 
@@ -34,12 +34,12 @@ Reading of the value ladders:
 - **Polymorphism** — `mono` → `templ` (compile-time expansion) → `poly` (parametric)
   → `typeclasses` (ad-hoc dispatch).
 
-## The eleven
+## The thirteen
 
-| # | Sub-dimension | Python | C | C++ | Java | C# | JS | TS | Rust | Lisp | Haskell | SML |
-|---|---------------|--------|---|-----|------|----|----|----|------|------|---------|-----|
-| 1 | GC tagging | boxed | none | none | headers | headers | boxed | boxed | none | boxed | tagged | tagged |
-| 2 | Low-level | none | full | full | partial | partial | none | none | full | none | partial | none |
-| 3 | Null vs option | null | null | null | null | null | null | null | option | null | option | option |
-| 4 | Data types | structs | enums | enums | enums | enums | structs | ADT | ADT | structs | GADT | ADT |
-| 5 | Polymorphism | poly | mono | templ | poly | poly | poly | poly | typeclasses | poly | typeclasses | poly |
+| # | Sub-dimension | Python | C | C++ | Java | C# | JS | TS | Rust | Lisp | Haskell | SML | OCaml | OxCaml |
+|---|---------------|--------|---|-----|------|----|----|----|------|------|---------|-----|-------|--------|
+| 1 | GC tagging | boxed | none | none | headers | headers | boxed | boxed | none | boxed | tagged | tagged | tagged | tagged |
+| 2 | Low-level | none | full | full | partial | partial | none | none | full | none | partial | none | none | partial |
+| 3 | Null vs option | null | null | null | null | null | null | null | option | null | option | option | option | option |
+| 4 | Data types | structs | enums | enums | enums | enums | structs | ADT | ADT | structs | GADT | ADT | GADT | GADT |
+| 5 | Polymorphism | poly | mono | templ | poly | poly | poly | poly | typeclasses | poly | typeclasses | poly | poly | poly |

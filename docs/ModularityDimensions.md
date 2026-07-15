@@ -21,7 +21,7 @@ typeclass dispatch encoded as explicit functor application.
 | 3 | Functors | yes / no |
 | 4 | Typeclasses | yes / no / as functor |
 
-## The eleven, dimensionalized
+## The thirteen, dimensionalized
 
 | # | Language | Base modules | Signatures | Functors | Typeclasses |
 |---|----------|--------------|------------|----------|-------------|
@@ -36,7 +36,10 @@ typeclass dispatch encoded as explicit functor application.
 | 9 | Common Lisp | yes | no | no | no |
 | 10 | Haskell | yes | no | no | yes |
 | 11 | SML | yes | yes | yes | no |
+| 12 | OCaml | yes | yes | yes | no |
+| 13 | OxCaml | yes | yes | yes | no |
 
 Notes on the yes cells: C++ typeclasses are C++20 concepts; Rust's are traits;
-Haskell's are typeclasses proper. SML is the only language here with signatures and
-functors. Java/C# interfaces are nominal subtyping, not typeclasses, so they read no.
+Haskell's are typeclasses proper. SML, OCaml, and OxCaml are the languages here with
+signatures and functors. Java/C# interfaces are nominal subtyping, not typeclasses,
+so they read no.

@@ -26,3 +26,5 @@ single universal type).
 | 9 | Common Lisp | both | dynamic (uni-typed) | GC |
 | 10 | Haskell | both | static | GC |
 | 11 | SML | both | static | GC |
+| 12 | OCaml | both (native + bytecode) | static (HM inference) | GC |
+| 13 | OxCaml | both (native, flambda2) | static (+ modes, layouts) | GC (+ alloc control) |
