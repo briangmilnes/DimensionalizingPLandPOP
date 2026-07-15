@@ -31,4 +31,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 6 | [PLSpeed.md](docs/PLSpeed.md) | Compilation speed, runtime speed, and maximal parallelism, from benchmark data |
 | 7 | [ProofsOfProgramsSystems.md](docs/ProofsOfProgramsSystems.md) | Proof-of-programs systems (Rocq, Lean, Agda, Twelf, Isabelle/HOL, Iris, F*, Verus, Dafny, Why3) dimensionalized, including PL-semantics vs proofs-of-programs |
 | 8 | [ProofsOfProgrammingLanguages.md](docs/ProofsOfProgrammingLanguages.md) | Which languages have verified implementations (CompCert, CakeML, …) and verified libraries, with honest extent |
+| 9 | [SMTs.md](docs/SMTs.md) | SMT solvers: implementation language, whether the kernel is verified, and proof-certificate output |
 
