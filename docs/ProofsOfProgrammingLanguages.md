@@ -26,17 +26,23 @@ to Standard ML, proved in HOL4 and bootstrapped inside the logic down to concret
 machine code for five architectures.
 
 Most of the thirteen have no verified compiler. The honest distinctions this table
-draws are: a **verified compiler or implementation** of the real language or a defined
-subset; a **mechanized formal semantics** with type-safety metatheory but no verified
+draws, from weakest to strongest assurance: an **informal semantics** — a rigorous but
+on-paper soundness proof, not machine-checked; a **mechanized formal semantics** with
+type-safety metatheory, checked by a proof assistant but with no verified
 implementation; only **verified libraries or programs** written in the language while
-the toolchain remains trusted; and **none**. Mechanized semantics is a real result but
-is not a verified compiler, and this document does not conflate the two.
+the toolchain remains trusted; and a **verified compiler** of a subset or of the real
+language, machine-checked end to end. An on-paper proof is weaker than a
+machine-checked semantics, which is weaker than a verified compiler; this document does
+not conflate them.
 
-The **Extent** column uses this vocabulary: `compiler` (a verified compiler or
-interpreter, of the full language or a stated subset), `subset` (a verified compiler
-for a proper subset only), `semantics` (mechanized formal semantics and/or type-safety
-proof, no verified implementation), `library-only` (verified libraries or programs, the
-compiler unverified), and `none`.
+The **Extent** column runs from weakest to strongest assurance: `none`; `informal-sem`
+(a rigorous but not machine-checked semantics or soundness proof, on paper);
+`formal-sem` (a mechanized formal semantics and/or type-safety proof in a proof
+assistant, no verified implementation); `library-only` (verified libraries or programs
+written in the language, the compiler itself unverified); `subset` (a machine-checked
+verified compiler for a proper subset); and `compiler` (a machine-checked verified
+compiler or interpreter). VLISP is the one `compiler` entry whose correctness proof is
+rigorous but not machine-checked, flagged in its row.
 
 ## The Thirteen
 
@@ -44,16 +50,16 @@ compiler unverified), and `none`.
 |----------|-------------------------|--------|--------|----------------------------|
 | Python | none | — | none | No verified implementation and no notable verified library. Partial mechanized-semantics fragments exist; PyPy/RPython are not verified. |
 | C | CompCert | Rocq (Coq) | compiler | VST (separation-logic verification of C source, Rocq); seL4 (verified OS kernel written in C, Isabelle — a verified program, not a compiler); HACL\*/EverCrypt and Fiat-Crypto emit verified C. |
-| C++ | none (semantics only) | Isabelle/HOL | semantics | Operational semantics with a multiple-inheritance type-safety proof (Wasserrab et al.); the C++11 concurrency memory model was mechanized (Batty et al.). No verified compiler. |
+| C++ | none (semantics only) | Isabelle/HOL | formal-sem | Operational semantics with a multiple-inheritance type-safety proof (Wasserrab et al.); the C++11 concurrency memory model was mechanized (Batty et al.). No verified compiler. |
 | Java | Jinja / JinjaThreads | Isabelle/HOL | subset | Verified non-optimizing source-to-bytecode compiler for a Java subset, plus a verified bytecode verifier and a type-safe multithreaded model under the Java memory model. |
 | C# | none | — | none | Subset formalizations of C#/CLR exist; no verified compiler or notable verified library. |
-| JS | JSCert + JSRef; KJS | Rocq (Coq); K | semantics | JSCert is a Coq-mechanized ECMAScript semantics with JSRef, a reference interpreter extracted to OCaml and proved correct against it; KJS is a complete executable semantics in the K framework. Mechanized semantics, not a verified production engine. |
-| TS | Safe TypeScript | on-paper proof | semantics | Sound gradual type system for a TypeScript subset with a formal soundness treatment (Rastogi et al.); a type-system result, not a verified compiler. |
-| Rust | RustBelt | Iris / Rocq (Coq) | semantics | Machine-checked semantic soundness (memory and thread safety) for a λ-calculus model of Rust and several unsafe-using stdlib APIs. Aeneas/Charon translate safe Rust to functional models for proof; Miri is an unverified interpreter. No verified rustc. |
+| JS | JSCert + JSRef; KJS | Rocq (Coq); K | formal-sem | JSCert is a Coq-mechanized ECMAScript semantics with JSRef, a reference interpreter extracted to OCaml and proved correct against it; KJS is a complete executable semantics in the K framework. Mechanized semantics, not a verified production engine. |
+| TS | Safe TypeScript | on-paper proof | informal-sem | Sound gradual type system for a TypeScript subset with a formal soundness treatment (Rastogi et al.); a type-system result, not a verified compiler. |
+| Rust | RustBelt | Iris / Rocq (Coq) | formal-sem | Machine-checked semantic soundness (memory and thread safety) for a λ-calculus model of Rust and several unsafe-using stdlib APIs. Aeneas/Charon translate safe Rust to functional models for proof; Miri is an unverified interpreter. No verified rustc. |
 | Lisp | VLISP (Scheme) | rigorous denotational (not machine-checked) | compiler | Verified Scheme-to-bytecode compiler plus a verified byte-code interpreter, based on the Clinger–Rees denotational semantics; the proofs are rigorous but not mechanized. ACL2 is a prover built on an applicative Common Lisp subset. |
-| Haskell | none | Rocq (Coq) | semantics + library-only | hs-to-coq / CoreSpec: a formal semantics and type-soundness proof for GHC Core, and verification of subsets of `base` and `containers` (Map, Set, IntSet). No verified GHC. |
+| Haskell | none | Rocq (Coq) | formal-sem + library-only | hs-to-coq / CoreSpec: a formal semantics and type-soundness proof for GHC Core, and verification of subsets of `base` and `containers` (Map, Set, IntSet). No verified GHC. |
 | SML | CakeML | HOL4 | compiler | Verified compiler and runtime for an ML dialect close to SML, bootstrapped to machine code, with a verified generational GC and bignum library. Standard ML also has mechanized definitions and type-safety proofs of its semantics. |
-| OCaml | none (semantics fragment) | Rocq (Coq) | semantics | Osiris (OLang) mechanizes a sequential OCaml fragment with Iris-based program logics; coq-of-ocaml and Cameleer add proof/verification tooling. No verified OCaml compiler. |
+| OCaml | none (semantics fragment) | Rocq (Coq) | formal-sem | Osiris (OLang) mechanizes a sequential OCaml fragment with Iris-based program logics; coq-of-ocaml and Cameleer add proof/verification tooling. No verified OCaml compiler. |
 | OxCaml | none | — | none | Jane Street's OCaml extension; no verified implementation. Inherits OCaml's unverified compiler and the fragment-level semantics work above. |
 
 ## Notes
