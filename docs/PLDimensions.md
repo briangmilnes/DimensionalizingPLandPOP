@@ -41,7 +41,7 @@ obj = objects, lin+bor = linear + borrow.
 | 18 | Interfaces | strong / weak / objects / none |
 | 19 | Bit-layout | yes / no |
 | 20 | Unsafe escape | yes / no / n/a |
-| 21 | Concurrent | none / threads |
+| 21 | Concurrent | none / threads / sessions |
 | 22 | Linear + borrow | lin+bor / no |
 
 ## The Thirteen on these Dimensions
@@ -68,5 +68,5 @@ obj = objects, lin+bor = linear + borrow.
 | 18 | Interfaces | weak | none | obj | obj | obj | weak | obj | strong | weak | strong | strong | strong | strong |
 | 19 | Bit-layout | no | yes | yes | no | no | no | no | yes | no | no | no | no | yes |
 | 20 | Unsafe escape | no | n/a | n/a | yes | yes | no | no | yes | yes | yes | no | yes | yes |
-| 21 | Concurrent | threads | threads | threads | threads | threads | threads | threads | threads | threads | threads | none | threads | threads |
+| 21 | Concurrent | threads | threads | threads | threads | threads | threads | threads | threads | threads | sessions | none | threads | threads |
 | 22 | Lin+bor | no | no | no | no | no | no | no | lin+bor | no | no | no | no | lin+bor |
