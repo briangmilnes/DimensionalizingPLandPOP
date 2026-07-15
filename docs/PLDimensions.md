@@ -9,7 +9,7 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 # Programming Language Dimensions
 
 The axes along which programming languages vary. Values listed are only those
-actually spanned by the thirteen languages in `ElevenPLs.md`.
+actually spanned by the thirteen languages in `ThirteenPLs.md`.
 
 Abbreviations used in the grid: comp = compiled, interp = interpreted,
 dyn = dynamic, nom = nominal, struct = structural, monom = monomorphic,

@@ -8,7 +8,7 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 
 # Typing Dimensions
 
-A deeper cut on the type systems of the thirteen languages in `ElevenPLs.md`:
+A deeper cut on the type systems of the thirteen languages in `ThirteenPLs.md`:
 runtime tagging for GC, low-level expressibility, the null/option split, the
 algebraic-data-type ladder, and the polymorphism mechanism.
 

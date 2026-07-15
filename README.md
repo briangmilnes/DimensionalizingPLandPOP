@@ -23,7 +23,7 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 
 | # | Document | Covers |
 |---|----------|--------|
-| 1 | [ElevenPLs.md](docs/ElevenPLs.md) | Thirteen programming languages basic dimensional properties |
+| 1 | [ThirteenPLs.md](docs/ThirteenPLs.md) | Thirteen programming languages basic dimensional properties |
 | 2 | [PLDimensions.md](docs/PLDimensions.md) | The dimensions along which programming languages vary |
 | 3 | [TypingDimensions.md](docs/TypingDimensions.md) | Type systems: GC tagging, low-level, null/option, ADTs, polymorphism |
 | 4 | [ModularityDimensions.md](docs/ModularityDimensions.md) | Modularity broken into base modules, signatures, functors, typeclasses |
