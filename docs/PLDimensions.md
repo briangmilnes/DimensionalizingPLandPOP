@@ -27,6 +27,8 @@ and the duck-typing cell is `duck`.
 | 15 | Null model | null / option |
 | 16 | Modularity | weak / typeclasses / strong |
 | 17 | Interfaces | strong / weak / objects / none |
+| 18 | Bit-layout | yes / no |
+| 19 | Unsafe escape | yes / no / n/a |
 
 ## The eleven, dimensionalized
 
@@ -49,3 +51,5 @@ and the duck-typing cell is `duck`.
 | 15 | Null model | null | null | null | null | null | null | null | option | null | option | option |
 | 16 | Modularity | weak | weak | typeclasses | weak | weak | weak | weak | typeclasses | weak | typeclasses | strong |
 | 17 | Interfaces | weak | none | objects | objects | objects | weak | objects | strong | weak | strong | strong |
+| 18 | Bit-layout | no | yes | yes | no | no | no | no | yes | no | no | no |
+| 19 | Unsafe escape | no | n/a | n/a | yes | yes | no | no | yes | yes | yes | no |
