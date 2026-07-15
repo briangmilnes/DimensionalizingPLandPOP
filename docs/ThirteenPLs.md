@@ -8,7 +8,7 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 
 # Programming Languages — Basic Dimensions
 
-Dimensionalizing programming languages on three basic axes: compilation, typing,
+ Here we dimensionalize programming languages on three basic axes: compilation, typing,
 and memory management. "Dynamic" typing is labeled "uni-typed" (after Dana Scott's
 observation that a dynamically typed language is a statically typed language with a
 single universal type).
