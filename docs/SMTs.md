@@ -176,6 +176,98 @@ bit-vector solver extracted from a Rocq development (verified bit-blasting plus 
 verified SAT-certificate checker). Both are narrow; every general-purpose solver in
 the table is unverified and relies on the certificate-plus-checker path for trust.
 
+## Limited / theory-specialized solvers
+
+The eleven-solver table above lists solvers marketed as general-purpose SMT
+engines. A second population of solvers targets a single theory, or a narrow group
+of theories, and does not compete across SMT-LIB divisions. These are the tools you
+reach for when the problem is entirely nonlinear real arithmetic, entirely
+bit-vectors, entirely floating-point, or entirely strings, and a specialized
+decision procedure beats a general engine. The columns match the main table where
+they apply; `Certificate` uses the same three levels (`yes` = independently
+checkable proof object, `partial` = unsat core or engine trace only, `no` = none).
+
+| Solver | Theory / scope | Implementation language | Certificate | Notes |
+|--------|----------------|-------------------------|-------------|-------|
+| dReal | Nonlinear real arithmetic + ODEs (QF_NRA over transcendental functions) | C++ | yes | δ-complete DPLL(ICP); returns `unsat` or `δ-sat`; emits an unsat proof with a bundled proof checker. |
+| MetiTarski | Inequalities over transcendental/elementary functions (ln, exp, sin, …) | Standard ML | partial | A first-order ATP (modified Metis), not an SMT-LIB solver; calls an external real-closed-field oracle (QEPCAD, Z3, or Mathematica). Proof trusts that oracle. |
+| SMT-RAT | Nonlinear real and integer arithmetic (also linear, difference logic, bit-vectors) | C++ | partial | Modular CAD / virtual-substitution / Gröbner toolbox on the CArL library (RWTH Aachen); emits infeasible subsets, not full proofs. |
+| raSAT | Polynomial inequality constraints over reals (QF_NRA) | OCaml | no | Interval over-approximation plus testing under-approximation, on top of MiniSAT; research prototype, effectively unmaintained. |
+| iSAT3 | Nonlinear + transcendental arithmetic; bounded model checker | C++ | no | Interval constraint propagation fused with CDCL; incomplete (may return `unknown` with an undecided interval box); research tool. |
+| Boolector | Bit-vectors, arrays, uninterpreted functions | C | partial | Unsat cores and SAT-layer DRUP; the direct predecessor of Bitwuzla. Development stopped; superseded by Bitwuzla. |
+| Colibri (COLIBRI) | Floating-point + constraint programming | Prolog (used as a Prolog library) | no | The ancestor of the Colibri family (in development since 2000); reimplemented in OCaml as Colibri2, which is in the general table. |
+| Z3-Noodler | Strings (word equations + regular constraints) | C++ | no | A fork of Z3 that replaces the string theory solver with a stabilization-based automata procedure on the Mata library (VeriFIT, Brno); actively developed. |
+| OSTRICH | Strings (concatenation, reverse, replaceAll, …) | Scala | no | Automata-based decision procedure built as a library on top of Princess; actively developed (OSTRICH2 is the current line). |
+| Princess | Presburger arithmetic + uninterpreted predicates; also arrays, ADTs, bit-vectors, strings, heaps | Scala | partial | An interpolating first-order prover; produces internal proofs and Craig interpolants, but no shared external certificate format. It is the SMT back end OSTRICH extends. |
+
+Per-solver detail:
+
+- **dReal** (C++) decides first-order formulas over the reals with polynomials,
+  trigonometric, exponential, and other nonlinear functions, and can integrate
+  ordinary differential equations. It implements δ-complete decision procedures
+  in the DPLL(ICP) framework: an answer is `unsat` (sound) or `δ-sat` (a solution
+  to a δ-perturbed formula). It is the one solver in this table with a genuine
+  proof story — the `--proof` option emits an unsatisfiability proof and the
+  distribution ships a checker for it.
+- **MetiTarski** (Standard ML) is properly a first-order automatic theorem
+  prover, not an SMT-LIB solver: a modified version of Joe Leslie-Hurd's Metis
+  superposition prover that discharges the real-arithmetic side conditions with
+  an external cylindrical-algebraic-decomposition oracle (QEPCAD by default, or
+  Z3 or Mathematica). It proves universally quantified inequalities over
+  elementary functions. Its proof is a resolution derivation that trusts the CAD
+  oracle, so it is not a self-contained certificate.
+- **SMT-RAT** (C++) is a toolbox rather than a single engine: parameterized
+  modules (virtual substitution, cylindrical algebraic decomposition, Gröbner-basis
+  simplification) combined by a user-specified strategy, built on the CArL
+  real-arithmetic library. Its focus is nonlinear real and integer arithmetic; it
+  emits infeasible subsets (unsat cores), not full proofs.
+- **raSAT** (OCaml, on MiniSAT) solves polynomial inequalities by combining
+  interval arithmetic (over-approximation for unsat) with testing
+  (under-approximation for sat), refining intervals when both are inconclusive. It
+  is a research prototype and is not actively maintained.
+- **iSAT3** (C++) tightly integrates DPLL/CDCL with interval constraint
+  propagation over linear, nonlinear, and transcendental constraints, and serves
+  as a bounded model checker. It is incomplete on satisfiable instances — it can
+  stop with an interval box of unknown status — and is a research tool, not a
+  competition entrant.
+- **Boolector** (C) is the direct predecessor of Bitwuzla, covering bit-vectors,
+  arrays, and uninterpreted functions by bit-blasting with lemmas-on-demand for
+  arrays. Its active development has stopped; the project itself states it is
+  succeeded by Bitwuzla. It produces unsat cores and SAT-level DRUP, hence
+  `partial`.
+- **Colibri (COLIBRI)** is the original constraint-programming solver of the
+  Frama-C Colibri family, in development since 2000 and used as a Prolog library
+  by other tools. It maintains high-level interval and flag information per
+  floating-point value rather than bit-blasting. Colibri2 (in the general table)
+  is its OCaml reimplementation, and Colibrics is the formally proved sibling
+  cited in the verified-kernel note above.
+- **Z3-Noodler** (C++) is a fork of Z3 v4.15.x that swaps Z3's string theory
+  solver for a stabilization-based automata procedure implemented on the Mata
+  automata library. It inherits Z3's non-string reasoning; its string solver adds
+  no separate proof certificate.
+- **OSTRICH** (Scala) is an automata-based string solver built as a library on
+  Princess, with a decision procedure exploiting distributivity of regular
+  constraints across function pre-images (concatenation, reverse, replaceAll, and
+  more). It is actively developed; OSTRICH2 is the current release line.
+- **Princess** (Scala) is an interpolating theorem prover for Presburger
+  arithmetic with uninterpreted predicates, extended with theory modules for
+  arrays, nonlinear arithmetic, rationals, bit-vectors, algebraic datatypes,
+  heaps, and strings. It produces internal proofs and Craig interpolants but no
+  shared external certificate format, so `partial`. OSTRICH is built on it.
+
+A caveat on the general/limited boundary: the split between the eleven-solver table
+and this one is not clean, because several solvers currently listed as
+general-purpose are themselves theory-limited. **Bitwuzla** covers only
+bit-vectors, floating-point, arrays, and uninterpreted functions — it has no
+arithmetic theory. **STP** covers only bit-vectors and arrays (it appears in the
+main table as a `niche` division entrant, but by scope it belongs here alongside
+Boolector). **Colibri2** is a floating-point and constraint-programming solver, the
+OCaml successor of the COLIBRI listed just above. **SMTInterpol** is confined to
+quantifier-free uninterpreted functions plus linear arithmetic, with its design
+centered on interpolation. These four sit in the main table for historical or
+SMT-COMP-participation reasons, not because their theory coverage is broad. The
+rows are left in place here; whether to relocate them is a maintenance decision.
+
 ## Sources
 
 - Z3 proof logs and proof terms — https://microsoft.github.io/z3guide/programming/Proof%20Logs/ ; "Proofs in Satisfiability Modulo Theories" — https://leodemoura.github.io/files/SMTProofs.pdf ; Z3 Theorem Prover — https://en.wikipedia.org/wiki/Z3_Theorem_Prover
@@ -192,4 +284,14 @@ the table is unverified and relies on the certificate-plus-checker path for trus
 - Carcara Alethe checker — https://link.springer.com/chapter/10.1007/978-3-031-30823-9_19
 - SMTCoq — https://smtcoq.github.io/capi.html
 - DRAT-based bit-vector proofs — https://arxiv.org/abs/1907.00087 ; CoqQFBV certified QF_BV solver — https://link.springer.com/chapter/10.1007/978-3-030-81688-9_7
+- dReal (C++, δ-complete, ODEs, proofs) — http://dreal.github.io/ ; "dReal: An SMT Solver for Nonlinear Theories over the Reals" — https://link.springer.com/chapter/10.1007/978-3-642-38574-2_14 ; dreal4 — https://github.com/dreal/dreal4
+- MetiTarski (Standard ML, elementary functions, CAD oracle) — https://www.cl.cam.ac.uk/~lp15/papers/Arith/ ; "MetiTarski: An Automatic Prover for the Elementary Functions" — https://www.cl.cam.ac.uk/~lp15/papers/Arith/calculemus2008.pdf ; Metis (Standard ML) — https://www.gilith.com/metis/
+- SMT-RAT (C++ toolbox, CAD/VS, CArL) — https://smt-comp.github.io/2020/system-descriptions/SMT-RAT.pdf ; "SMT-RAT: An Open Source C++ Toolbox for Strategic and Parallel SMT Solving" — https://link.springer.com/chapter/10.1007/978-3-319-24318-4_26
+- raSAT (OCaml on MiniSAT, interval + testing) — "raSAT: an SMT solver for polynomial constraints" — https://link.springer.com/article/10.1007/s10703-017-0284-9
+- iSAT3 (C++, interval constraint propagation, bounded model checker) — "Implication Graph Compression inside the SMT Solver iSAT3" — https://www.semanticscholar.org/paper/06e898cca568bad925c83276a24ee3aa0111d992
+- Boolector (C, bit-vectors/arrays/UF; succeeded by Bitwuzla) — https://github.com/Boolector/boolector ; "Boolector: An Efficient SMT Solver for Bit-Vectors and Arrays" — https://link.springer.com/chapter/10.1007/978-3-642-00768-2_16
+- Colibri family (COLIBRI ancestor as a Prolog library; Colibri2 OCaml; Colibrics proved) — https://colibri.frama-c.com/ ; "An efficient constraint based framework for handling floating point SMT problems" — https://arxiv.org/pdf/2002.12441
+- Z3-Noodler (C++ Z3 fork, automata strings on Mata) — https://github.com/VeriFIT/z3-noodler ; "Z3-Noodler: An Automata-based String Solver" — https://link.springer.com/chapter/10.1007/978-3-031-57246-3_2
+- OSTRICH (Scala, automata strings on Princess) — https://github.com/uuverifiers/ostrich ; "OSTRICH2: Solver for Complex String Constraints" — https://arxiv.org/pdf/2506.14363
+- Princess (Scala, Presburger + UF, arrays, interpolation) — http://www.philipp.ruemmer.org/princess.shtml ; https://github.com/uuverifiers/princess
 - SMT-COMP division results (basis for the `SMT-COMP standing` column) — 2025 single-query results https://smt-comp.github.io/2025/results/results-single-query/ ; 2024 single-query results https://smt-comp.github.io/2024/results/results-single-query/ ; 2024 largest-contribution ranking https://smt-comp.github.io/2024/results/largest-contribution-single-query/ ; 2023 competition slides https://smt-workshop.cs.uiowa.edu/2023/slides/smtcomp.pdf ; results index https://smt-comp.github.io/2024/results/
