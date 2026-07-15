@@ -28,4 +28,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 3 | [TypingDimensions.md](docs/TypingDimensions.md) | Type systems: GC tagging, low-level, null/option, ADTs, polymorphism |
 | 4 | [ModularityDimensions.md](docs/ModularityDimensions.md) | Modularity broken into base modules, signatures, functors, typeclasses |
 | 5 | [PLFeaturefulness.md](docs/PLFeaturefulness.md) | Scores each dimension value by complexity and sums a featurefulness index per language |
+| 6 | [PLSpeed.md](docs/PLSpeed.md) | Compilation speed, runtime speed, and maximal parallelism, from benchmark data |
 
