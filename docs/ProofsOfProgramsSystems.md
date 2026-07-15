@@ -62,8 +62,8 @@ metatheory, PoP = proofs of programs.
 | 3 | Proof style | interactive | interactive | interactive | interactive | hybrid | interactive | hybrid | auto | auto | hybrid |
 | 4 | Trusted base | kernel | kernel | kernel | kernel | kernel | kernel | +SMT | +SMT | +SMT | +SMT |
 | 5 | Program model | embedded | own-lang | own-lang | embedded | embedded | embedded | own-lang | annotates | own-lang | own-lang |
-| 6 | Program logic | — | — | — | — | Hoare | conc-sep | Hoare | separation | Hoare | Hoare |
-| 7 | Concurrency | no | no | no | no | no | yes | no | yes | no | no |
+| 6 | Program logic | — | — | — | — | Hoare | conc-sep | conc-sep | separation | Hoare | Hoare |
+| 7 | Concurrency | no | no | no | no | no | yes | yes | yes | no | no |
 | 8 | Executable output | extract | native | extract | none | extract | none | extract | native | native | extract |
 | 9 | Host language | OCaml | Lean/C++ | Haskell | SML | SML | Rocq | F*/OCaml | Rust | C# | OCaml |
 | 10 | Good for | both | both | both | PL-sem | both | both | PoP | PoP | PoP | PoP |
@@ -93,12 +93,16 @@ This is an early cut; several cells report the base system, not its extensions.
 - **Why3** is a deductive-verification platform and intermediate language
   (WhyML) that discharges verification conditions to external SMT and ATP
   provers. SPARK, Frama-C, and Creusot use it as a backend.
-- **Program logic and Concurrency** rows describe the base system. Rocq and F\*
-  reach concurrent separation logic through extensions (Iris for Rocq;
-  Steel/Pulse for F\*); Isabelle and Verus have concurrency developments beyond
-  the base value shown. F\*'s `Hoare` cell is its Dijkstra-monad
-  weakest-precondition reasoning; Dafny's is weakest-precondition with dynamic
-  frames, discharged to Z3 through Boogie.
+- **F\*** provides concurrent separation logic through two DSLs embedded in it:
+  Steel (on the SteelCore concurrent separation logic, ICFP 2020) and its
+  successor Pulse (on PulseCore, an impredicative concurrent separation logic).
+  Its `conc-sep` and `yes` cells reflect these; F\*'s effectful base additionally
+  has Dijkstra-monad weakest-precondition reasoning.
+- **Program logic and Concurrency** otherwise describe the base system. Rocq
+  reaches concurrent separation logic through the Iris library (its own row);
+  Isabelle and Verus have concurrency developments beyond the base value shown.
+  Dafny's program logic is weakest-precondition with dynamic frames, discharged
+  to Z3 through Boogie.
 - **Executable output** — `extract` (Rocq, Agda, Isabelle, F\*, Why3) emits a
   general-purpose language with proofs erased; `native` (Lean, Verus, Dafny)
   compiles programs to run directly; `none` (Twelf, Iris) reasons about programs
