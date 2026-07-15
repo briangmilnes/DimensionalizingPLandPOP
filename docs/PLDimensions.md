@@ -44,7 +44,7 @@ obj = objects, lin+bor = linear + borrow. In Concurrent, safe = data-race-free.
 | 21 | Concurrent | none / GIL / threads / async / safe |
 | 22 | Linear + borrow | lin+bor / no |
 
-## The thirteen, dimensionalized
+## The Thirteen on these Dimensions
 
 | # | Dimension | Python | C | C++ | Java | C# | JS | TS | Rust | Lisp | Haskell | SML | OCaml | OxCaml |
 |---|-----------|--------|---|-----|------|----|----|----|------|------|---------|-----|-------|--------|

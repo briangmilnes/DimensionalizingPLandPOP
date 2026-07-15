@@ -34,7 +34,7 @@ Reading of the value ladders:
 - **Polymorphism** — `mono` → `templ` (compile-time expansion) → `poly` (parametric)
   → `typeclasses` (ad-hoc dispatch).
 
-## The thirteen
+## The Thirteen on these Dimensions
 
 | # | Sub-dimension | Python | C | C++ | Java | C# | JS | TS | Rust | Lisp | Haskell | SML | OCaml | OxCaml |
 |---|---------------|--------|---|-----|------|----|----|----|------|------|---------|-----|-------|--------|

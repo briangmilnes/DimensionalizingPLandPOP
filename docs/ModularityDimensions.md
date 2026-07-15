@@ -21,7 +21,7 @@ typeclass dispatch encoded as explicit functor application.
 | 3 | Functors | yes / no |
 | 4 | Typeclasses | yes / no / as functor |
 
-## The thirteen, dimensionalized
+## The Thirteen on these Dimensions
 
 | # | Language | Base modules | Signatures | Functors | Typeclasses |
 |---|----------|--------------|------------|----------|-------------|
