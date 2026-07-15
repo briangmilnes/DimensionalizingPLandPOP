@@ -15,7 +15,7 @@ Abbreviations used in the grid: comp = compiled, interp = interpreted,
 dyn = dynamic, nom = nominal, struct = structural, monom = monomorphic,
 gen = generics, mut = mutable, immut = immutable, proc = procedural,
 func = functional, ptrs = pointers, excptns = exceptions, tclass = typeclasses,
-obj = objects, lin+bor = linear + borrow. In Concurrent, safe = data-race-free.
+obj = objects, lin+bor = linear + borrow.
 
 ## Dimensions
 
@@ -41,7 +41,7 @@ obj = objects, lin+bor = linear + borrow. In Concurrent, safe = data-race-free.
 | 18 | Interfaces | strong / weak / objects / none |
 | 19 | Bit-layout | yes / no |
 | 20 | Unsafe escape | yes / no / n/a |
-| 21 | Concurrent | none / GIL / threads / async / safe |
+| 21 | Concurrent | none / threads |
 | 22 | Linear + borrow | lin+bor / no |
 
 ## The Thirteen on these Dimensions
@@ -68,5 +68,5 @@ obj = objects, lin+bor = linear + borrow. In Concurrent, safe = data-race-free.
 | 18 | Interfaces | weak | none | obj | obj | obj | weak | obj | strong | weak | strong | strong | strong | strong |
 | 19 | Bit-layout | no | yes | yes | no | no | no | no | yes | no | no | no | no | yes |
 | 20 | Unsafe escape | no | n/a | n/a | yes | yes | no | no | yes | yes | yes | no | yes | yes |
-| 21 | Concurrent | GIL | threads | threads | threads | threads | async | async | safe | threads | threads | none | threads | safe |
+| 21 | Concurrent | threads | threads | threads | threads | threads | threads | threads | threads | threads | threads | none | threads | threads |
 | 22 | Lin+bor | no | no | no | no | no | no | no | lin+bor | no | no | no | no | lin+bor |
