@@ -11,42 +11,53 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 Satisfiability-modulo-theories solvers decide the satisfiability of quantifier-free
 (and, with instantiation, quantified) first-order formulas over background theories
 such as fixed-size bit-vectors, arrays, linear and nonlinear arithmetic, and
-uninterpreted functions. This document records eleven solvers on three attributes:
+uninterpreted functions. This document records eleven solvers on four attributes:
 the language the solver itself is written in, whether its core reasoning engine is
-formally verified, and whether it emits a checkable proof certificate — and in what
-format.
+formally verified, whether it emits a checkable proof certificate, and whether a
+formally verified checker exists for that certificate.
 
-The single most important observation is the middle column. No production SMT solver
-listed here has a formally verified kernel: every entry reads `no`. Production SMT
-solvers are large, heavily optimized C, C++, OCaml, and Java programs; verifying the
-kernel of one is not how the field establishes trust. Trust instead comes from the
-third column: an unverified solver emits a proof certificate that a *separate*, often
-formally verified, proof checker validates independently. The solver may be wrong; the
-checker's acceptance is what is trusted. This is why proof output, not kernel
-verification, is the axis along which these systems actually differ.
+The single most important observation is the `Kernel verified` column. No production
+SMT solver listed here has a formally verified kernel: every entry reads `no`.
+Production SMT solvers are large, heavily optimized C, C++, OCaml, and Java programs;
+verifying the kernel of one is not how the field establishes trust. Trust instead
+comes from the last two columns: an unverified solver emits a proof certificate that a
+*separate* proof checker validates independently, and that checker can itself be
+formally verified. The solver may be wrong; the checker's acceptance is what is
+trusted. In the literature this checker is a **proof checker** or **certificate
+checker** — the checking half of a *certifying algorithm* (Blum & Kannan; McConnell et
+al.), where an algorithm emits a witness/certificate that a small checker validates.
+This is why certificate production and its verified checking, not kernel verification,
+are the axes along which these systems actually differ.
 
-The `Proof output` column distinguishes three levels. `yes (format)` means the solver
-emits a fine-grained proof object in the named format that an external checker can
-validate. `partial` means the solver produces only a coarse artifact — an
-unsatisfiable core (the subset of assertions responsible for unsatisfiability) or an
-engine-specific trace — that is not a full, independently checkable refutation.
-`no` means no proof or certificate is emitted.
+The `Certificate` column distinguishes three levels. `yes` means the solver emits a
+fine-grained proof object that an external checker can validate (the format is named
+per solver in the Notes). `partial` means the solver produces only a coarse artifact —
+an unsatisfiable core (the subset of assertions responsible for unsatisfiability) or
+an engine-specific trace — that is not a full, independently checkable refutation.
+`no` means no certificate is emitted.
+
+The `Verified checker` column records whether a *formally verified* proof checker
+exists for the solver's certificate — a checker whose own correctness is
+machine-checked, so accepting a certificate carries a proof-level guarantee. It reads
+`yes` only for the solvers whose proofs SMTCoq reconstructs and validates inside Rocq
+(Z3, cvc5, veriT); the other formats have only unverified checkers, or no full
+certificate to check.
 
 ## The Eleven Solvers
 
-| Solver | Implementation language | Kernel verified | Proof output |
-|--------|-------------------------|-----------------|--------------|
-| Z3 | C++ | no | yes (proof terms; newer SAT/EUF proof logs) |
-| cvc5 | C++ | no | yes (Alethe, LFSC, Lean; DRAT for the bit-vector/SAT core) |
-| Yices2 | C | no | partial (DPLL(T) unsat proofs and unsat cores; none for the mcSAT engine) |
-| MathSAT5 | C++ | no | yes (own proof format; Craig interpolants) |
-| Bitwuzla | C++ | no | partial (unsat cores and interpolants; no full proof certificate) |
-| veriT | C | no | yes (Alethe) |
-| SMTInterpol | Java | no | yes (own resolution-proof format; Craig interpolants) |
-| Alt-Ergo | OCaml | no | partial (unsat cores; no fine-grained checkable proof) |
-| OpenSMT | C++ | no | yes (own resolution-proof format; interpolants) |
-| STP | C++ | no | no |
-| Colibri2 | OCaml | no | no |
+| Solver | Implementation language | Kernel verified | Certificate | Verified checker |
+|--------|-------------------------|-----------------|-------------|------------------|
+| Z3 | C++ | no | yes | yes |
+| cvc5 | C++ | no | yes | yes |
+| Yices2 | C | no | partial | no |
+| MathSAT5 | C++ | no | yes | no |
+| Bitwuzla | C++ | no | partial | no |
+| veriT | C | no | yes | yes |
+| SMTInterpol | Java | no | yes | no |
+| Alt-Ergo | OCaml | no | partial | no |
+| OpenSMT | C++ | no | yes | no |
+| STP | C++ | no | no | no |
+| Colibri2 | OCaml | no | no | no |
 
 ## Notes
 
@@ -69,7 +80,10 @@ principal checkers and formats:
   certified with a DRAT proof from the SAT back end (as in the DRAT-based bit-vector
   proofs first demonstrated in CVC4). DRAT checkers, and the verified GRAT/LRAT
   toolchains, discharge this layer.
-- **SMTCoq** checks proofs from Z3, cvc5, and veriT by reconstruction inside Rocq.
+- **SMTCoq** checks proofs from Z3, cvc5, and veriT by reconstruction inside Rocq —
+  these are exactly the three solvers whose `Verified checker` cell reads `yes`. The
+  per-solver certificate formats named above (Alethe, LFSC, own resolution formats,
+  etc.) are what each `Certificate` cell refers to.
 
 Per-solver details:
 
