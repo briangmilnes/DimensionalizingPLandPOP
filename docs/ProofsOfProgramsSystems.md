@@ -52,6 +52,8 @@ metatheory, PoP = proofs of programs.
 | 8 | Executable output | extract / native / none |
 | 9 | Host language | OCaml / Haskell / SML / Rust / C# / Lean / F* |
 | 10 | Good for | PL-sem / PoP / both |
+| 11 | Incremental | yes / partial / no |
+| 12 | Parallel | yes / partial / no |
 
 ## The Ten on these Dimensions
 
@@ -67,6 +69,8 @@ metatheory, PoP = proofs of programs.
 | 8 | Executable output | extract | native | extract | none | extract | none | extract | native | native | extract |
 | 9 | Host language | OCaml | Lean/C++ | Haskell | SML | SML | Rocq | F*/OCaml | Rust | C# | OCaml |
 | 10 | Good for | both | both | both | PL-sem | both | both | PoP | PoP | PoP | PoP |
+| 11 | Incremental | yes | yes | yes | no | yes | yes | yes | partial | partial | yes |
+| 12 | Parallel | yes | yes | partial | no | yes | yes | yes | yes | yes | yes |
 
 ## Notes
 
@@ -110,6 +114,56 @@ This is an early cut; several cells report the base system, not its extensions.
 - **Good for** — `PL-sem` systems are built for language semantics and metatheory;
   `PoP` systems are built to verify that specific programs meet specifications;
   `both` marks general proof assistants used either way.
+- **Incremental** records whether a module's checked result is written to a
+  persistent artifact and assumed on later runs, so the module is not re-checked
+  from scratch — the proof analogue of separate compilation. `yes` for the
+  systems that emit a per-module compiled artifact: Rocq writes `.vo` (and the
+  proof-erasing `.vos`) objects, which `Require` loads without re-checking; Lean
+  writes `.olean`; Agda writes `.agdai` interface files, reloaded rather than
+  re-checked when the source hash is unchanged; Isabelle builds persistent
+  session heap images (a dumped Poly/ML world) that downstream sessions load
+  without re-processing the parent theories; F\* writes `.checked` files that
+  cache a module's verification, skipped on the next run when the hash matches;
+  Iris inherits Rocq's `.vo`. Why3 is `yes` by a different mechanism: the proof
+  session (an XML database) records which prover and which transformations
+  discharged each goal, and `why3 replay` reuses that assignment rather than
+  redoing proof search — it re-invokes the provers to re-check, so the expensive
+  search result is saved and assumed, not the final boolean.
+- The two SMT-backed program verifiers are `partial`, correcting a first
+  guess of `yes`: they are modular but do not persist per-function results
+  across separate command-line runs. **Verus** verifies each function against
+  its callees' specifications, not their bodies, and at the crate boundary an
+  already-verified crate is exported as a `.vir` file whose functions are
+  imported and assumed (as `vstd` is) — that is genuine separate compilation of
+  proofs — but within a crate every batch run re-verifies the crate's own
+  functions from scratch, with no persistent per-function cache. **Dafny**
+  likewise verifies each method modularly against other methods' specifications;
+  Boogie's fine-grained caching (Leino and Wüstholz, 2015) reuses results across
+  edits within a live IDE or language-server session, keyed by call-graph and
+  control-flow checksums, but a fresh `dafny verify` process re-checks from
+  scratch.
+- **Twelf** is `no`: it re-reads its LF signatures from source and re-runs term
+  reconstruction and the totality (mode, coverage, termination) checks on each
+  session. It has no compiled-proof build artifact analogous to `.vo` or
+  `.olean`, so nothing checked is saved and assumed on a later run; loaded
+  signatures persist only in the memory of a running session, which is why this
+  cell is weaker than the rest.
+- **Parallel** records whether checking, elaboration, or verification runs on
+  multiple threads. `yes` for the systems that parallelize across modules or
+  within one: Rocq builds files concurrently (`make -j`, dune) and processes
+  proofs asynchronously; Lean builds modules in parallel under `lake` and
+  elaborates within a file concurrently; Isabelle is the established case of
+  parallel proof checking on Poly/ML (parallel across theories and within a
+  theory via futures, bounded by Poly/ML's single-threaded garbage collector);
+  Iris inherits Rocq's parallel build. The four SMT-backed systems are naturally
+  parallel because independent verification conditions are independent solver
+  queries: F\* verifies modules concurrently; Verus runs a bucket-based worker
+  pool, each worker holding its own Z3 process, sized by `--num-threads`; Dafny
+  parallelizes verification-condition solving with `/vcsCores`; Why3's scheduler
+  runs prover calls concurrently. **Agda** is `partial` — its `-j` flag gives
+  module-granularity parallelism across independent modules, but each module is
+  type-checked single-threaded. **Twelf** is `no`: single-threaded SML with no
+  parallel checking.
 - **Flagship uses**: Rocq — CompCert, VST; Isabelle/HOL — seL4; Twelf — mechanized
   language metatheory (POPLmark); F\* — HACL\*, EverCrypt; Lean — mathlib; Dafny —
   IronFleet; Why3 — SPARK, Frama-C backend.
