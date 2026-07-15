@@ -1,11 +1,3 @@
-<style>
-body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
-  max-width: 95% !important;
-  width: 95% !important;
-  margin: 0 auto;
-}
-</style>
-
 # Programming Language Dimensions
 
 The axes along which programming languages vary. Values listed are only those

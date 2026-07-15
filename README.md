@@ -1,11 +1,3 @@
-<style>
-body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
-  max-width: 95% !important;
-  width: 95% !important;
-  margin: 0 auto;
-}
-</style>
-
 # Dimensionalizing Programming Languages and Proofs of Programs
 
   This project is a design thinking exercise in dimensionalizing programming
@@ -17,7 +9,7 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
  Challenge' types of problem [Problem Structuring Difficulty](https://en.wikipedia.org/wiki/Problem_structuring_methods#Types_of_situations_that_call_for_PSMs). 
  
   Here we start with eleven interesting and/or popular programming languages and
- then dimensionalize them along a set of 
+ then dimensionalize them along a set of dimensions. 
 
 ## Documents
 
