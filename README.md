@@ -29,4 +29,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 4 | [ModularityDimensions.md](docs/ModularityDimensions.md) | Modularity broken into base modules, signatures, functors, typeclasses |
 | 5 | [PLFeaturefulness.md](docs/PLFeaturefulness.md) | Scores each dimension value by complexity and sums a featurefulness index per language |
 | 6 | [PLSpeed.md](docs/PLSpeed.md) | Compilation speed, runtime speed, and maximal parallelism, from benchmark data |
+| 7 | [ProofsOfProgramsSystems.md](docs/ProofsOfProgramsSystems.md) | Proof-of-programs systems (Rocq, Lean, Agda, Isabelle/HOL, Iris, F*, Verus, Dafny, Why3) dimensionalized |
 
