@@ -35,4 +35,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 10 | [ThirteenPLsSources.md](docs/ThirteenPLsSources.md) | Where to get each language's implementation source (incl. CompCert, CakeML), to pare down to authoritative sources for a LOC study |
 | 11 | [PLSizes.md](docs/PLSizes.md) | Measured code sizes (tokei, tests excluded) of compiler + base library for CompCert, CakeML, Rust, Clang/LLVM, OxCaml, and glibc |
 | 12 | [LLVMSizing.md](docs/LLVMSizing.md) | LLVM backend broken out by target architecture (25 targets, C++ vs TableGen) against the shared target-independent core |
+| 13 | [SMTSizes.md](docs/SMTSizes.md) | Measured source sizes (tokei, tests excluded) of 18 SMT solvers; 3 closed-source ones noted as unmeasurable |
 
