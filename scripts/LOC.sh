@@ -105,10 +105,14 @@ measure "Rust base library (library/std + core + alloc)" \
 
 echo "############################################################"
 echo "# LLVM project  (clang front end, llvm backend, libc++ base library)"
+echo "# test/ and unittests/ excluded: those hold .ll / .s / C/C++ TEST"
+echo "# CORPORA (millions of lines), not the tools' own hand-written source."
 echo "############################################################"
-measure "Clang C/C++ front end (clang/)" llvm-project/clang
-measure "LLVM shared backend (llvm/)" llvm-project/llvm
-measure "libc++ C++ base library (libcxx/)" llvm-project/libcxx
+EXCLUDES=(test unittests)
+measure "Clang C/C++ front end (clang/, excl. test+unittests)" llvm-project/clang
+measure "LLVM shared backend (llvm/, excl. test+unittests)" llvm-project/llvm
+measure "libc++ C++ base library (libcxx/, excl. test)" llvm-project/libcxx
+EXCLUDES=()
 
 echo "############################################################"
 echo "# OxCaml  (Jane Street's OCaml branch)"
