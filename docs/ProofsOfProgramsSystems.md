@@ -26,6 +26,21 @@ Two members are not peers of the rest, recorded in the grid and explained in the
 notes: Iris is a logic mechanized as a library inside Rocq, and Why3 is a
 verification backend other tools build on.
 
+## Systems
+
+| System | Core description |
+|--------|------------------|
+| **Rocq** (formerly Coq) | Interactive proof assistant on the Calculus of Inductive Constructions; small trusted kernel; extracts to OCaml/Haskell. |
+| **Lean 4** | Interactive proof assistant and programming language on a CIC variant, with strong metaprogramming. |
+| **Agda** | Dependently-typed programming language in which proof is programming (Martin-Löf type theory). |
+| **Twelf** | LF logical framework for programming-language metatheory; encodes deductive systems with higher-order abstract syntax and proves metatheorems by totality checking. |
+| **Isabelle/HOL** | Interactive proof assistant on classical higher-order logic, with strong automation (Sledgehammer). |
+| **Iris** | Higher-order concurrent separation logic mechanized as a Rocq library — a logic, not a standalone tool. |
+| **F\*** | Dependently-typed language with refinement types discharged by an SMT solver; extracts to OCaml/C; its Steel and Pulse DSLs add concurrent separation logic. |
+| **Verus** | SMT-based deductive verifier for Rust, with specifications embedded in Rust and ownership-based reasoning. |
+| **Dafny** | SMT-based auto-active verifier with its own language; weakest-precondition reasoning with dynamic frames. |
+| **Why3** | Deductive-verification platform and WhyML intermediate language that dispatches proof obligations to many provers; a backend other tools build on. |
+
 Abbreviations used in the grid: DTT = dependent type theory, HOL = higher-order
 logic, FOL = first-order logic, sep-logic = separation logic, CIC = Calculus of
 Inductive Constructions, CIC\* = Lean's CIC variant (proof-irrelevant `Prop`,
