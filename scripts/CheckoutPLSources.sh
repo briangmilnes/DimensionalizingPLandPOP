@@ -6,6 +6,7 @@ SOURCES=(
   "rust|https://github.com/rust-lang/rust.git"
   "llvm-project|https://github.com/llvm/llvm-project.git"
   "oxcaml|https://github.com/oxcaml/oxcaml.git"
+  "glibc|https://sourceware.org/git/glibc.git"
 )
 DEST="$(cd "$(dirname "$0")/.." && pwd)/sources"
 mkdir -p "$DEST"

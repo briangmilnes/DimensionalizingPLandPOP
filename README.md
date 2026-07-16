@@ -33,4 +33,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 8 | [ProofsOfProgrammingLanguages.md](docs/ProofsOfProgrammingLanguages.md) | Which languages have verified implementations (CompCert, CakeML, …) and verified libraries, with honest extent |
 | 9 | [SMTs.md](docs/SMTs.md) | SMT solvers: implementation language, whether the kernel is verified, and proof-certificate output |
 | 10 | [ThirteenPLsSources.md](docs/ThirteenPLsSources.md) | Where to get each language's implementation source (incl. CompCert, CakeML), to pare down to authoritative sources for a LOC study |
+| 11 | [PLSizes.md](docs/PLSizes.md) | Measured code sizes (tokei, tests excluded) of compiler + base library for CompCert, CakeML, Rust, Clang/LLVM, OxCaml, and glibc |
 

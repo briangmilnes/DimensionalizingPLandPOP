@@ -122,3 +122,39 @@ measure "OxCaml compiler + runtime (parsing typing bytecomp asmcomp backend midd
   oxcaml/parsing oxcaml/typing oxcaml/bytecomp oxcaml/asmcomp oxcaml/backend oxcaml/middle_end \
   oxcaml/lambda oxcaml/driver oxcaml/toplevel oxcaml/utils oxcaml/file_formats oxcaml/runtime
 measure "OxCaml base library (stdlib/)" oxcaml/stdlib
+
+echo "############################################################"
+echo "# glibc  (GNU C Library; the C base library that CompCert- and"
+echo "# Clang-compiled C link against). Dominant language: C."
+echo "#"
+echo "# Test exclusion is by directory basename AND by file-name glob,"
+echo "# because glibc interleaves per-directory test files inside source"
+echo "# dirs (tst-*.c, test-*.c) that a directory exclude alone misses:"
+echo "#   dirs  : test  tests  benchtests  (and any test* basename)"
+echo "#   files : tst-*  test-*  (tokei gitignore-style name globs; this"
+echo "#           empirically drops the ~3300 interleaved tst-*/test-* files"
+echo "#           and the htl/tests, localedata/tests, nptl tst-* corpora)"
+echo "#"
+echo "# CAVEAT: a residual set of differently-named test programs"
+echo "# (bug-*.c, check-*.c, ~130 files) is NOT matched by these globs and"
+echo "# remains in the C count. The figure is therefore a slight OVER-count"
+echo "# of pure library source, not an under-count."
+echo "#"
+echo "# localedata/ (locale definition tables, ~39M) is reported BOTH ways."
+echo "# It is data, not C code: excluding it changes the C figure by only"
+echo "# ~566 lines (its bulk is locale tables tokei classifies as PO/Autoconf/"
+echo "# Plain Text, never C). The HEADLINE run excludes localedata."
+echo "#"
+echo "# The library-code figure of record for the doc is the sum of the"
+echo "# actual implementation languages: C + C Header + GNU-style Assembly"
+echo "# (glibc's per-architecture hand-written asm in sysdeps IS library"
+echo "# code). Translation catalogs (PO files), build files (Makefile,"
+echo "# Autoconf, M4) and docs (TeX, Markdown) are NOT library source and"
+echo "# are read off the table but not summed into the headline figure."
+echo "############################################################"
+GLIBC_EX=(test tests benchtests 'test*' 'tst-*')
+EXCLUDES=("${GLIBC_EX[@]}" localedata)
+measure "glibc base library (whole repo; tests + localedata excluded) [HEADLINE]" glibc
+EXCLUDES=("${GLIBC_EX[@]}")
+measure "glibc base library (whole repo; tests excluded, localedata INCLUDED)" glibc
+EXCLUDES=()
