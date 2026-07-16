@@ -17,7 +17,20 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
  Challenge' types of problem [Problem Structuring Difficulty](https://en.wikipedia.org/wiki/Problem_structuring_methods#Types_of_situations_that_call_for_PSMs). 
  
   Here we start with thirteen interesting and/or popular programming languages and
- then dimensionalize them along a set of dimensions. 
+ then dimensionalize them along a set of dimensions — typing, modularity,
+ featurefulness, and speed.
+
+  The project then extends the same treatment to proofs of programs. It
+ dimensionalizes proof-of-programs systems — the proof assistants and deductive
+ verifiers (Rocq, Lean, Agda, Twelf, Isabelle/HOL, Iris, F\*, Verus, Dafny, Why3) —
+ records which languages have formally verified implementations (CompCert, CakeML,
+ and others), and catalogs the SMT solvers those tools rely on by implementation
+ language, kernel verification, and proof-certificate output.
+
+  Finally it grounds these dimensions in measurement: using the checkout and
+ line-counting scripts in `scripts/`, it reports the code sizes (lines of code,
+ tests excluded) of the compilers, base libraries, and solvers on disk, so the
+ sizes are reproducible numbers rather than estimates. 
 
 ## Documents
 
