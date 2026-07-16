@@ -50,4 +50,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 12 | [LLVMSizing.md](docs/LLVMSizing.md) | LLVM backend broken out by target architecture (25 targets, C++ vs TableGen) against the shared target-independent core |
 | 13 | [SMTSizes.md](docs/SMTSizes.md) | Measured source sizes (tokei, tests excluded) of 18 SMT solvers; 3 closed-source ones noted as unmeasurable |
 | 14 | [SMTCheckVerificationAndTCBandVCB.md](docs/SMTCheckVerificationAndTCBandVCB.md) | Which SMT solvers have a verified certificate checker, and the measured sizes of the Verified (VCB) vs Trusted (TCB) Computing Base against the unverified solvers |
+| 15 | [ProofsOfProgrammingLanguagesSizes.md](docs/ProofsOfProgrammingLanguagesSizes.md) | Measured sizes of the verified language developments (CompCert, CakeML, VST, seL4, RustBelt, …) split into compiler / core library / proof via validated heuristics |
 
