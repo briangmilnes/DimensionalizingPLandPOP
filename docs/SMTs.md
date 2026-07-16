@@ -11,11 +11,14 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 Satisfiability-modulo-theories solvers decide the satisfiability of quantifier-free
 (and, with instantiation, quantified) first-order formulas over background theories
 such as fixed-size bit-vectors, arrays, linear and nonlinear arithmetic, and
-uninterpreted functions. This document records eleven solvers on five attributes:
-the language the solver itself is written in, whether its core reasoning engine is
-formally verified, whether it emits a checkable proof certificate, whether a
+uninterpreted functions. This document records seven general-purpose solvers on five
+attributes: the language the solver itself is written in, whether its core reasoning
+engine is formally verified, whether it emits a checkable proof certificate, whether a
 formally verified checker exists for that certificate, and a coarse ordinal
-`SMT-COMP standing` derived from recent SMT-COMP division results (2023–2025).
+`SMT-COMP standing` derived from recent SMT-COMP division results (2023–2025). A second
+section lists theory-specialized solvers that target a single theory — nonlinear
+arithmetic, bit-vectors, floating-point, strings — rather than competing across the
+full range of divisions.
 
 There is no fair single-number measure of SMT solver speed. SMT-COMP reports
 per-division standings, not an overall ranking, and performance is theory- and
@@ -51,7 +54,7 @@ machine-checked, so accepting a certificate carries a proof-level guarantee. It 
 (Z3, cvc5, veriT); the other formats have only unverified checkers, or no full
 certificate to check.
 
-## The Eleven Solvers
+## The Seven General-Purpose Solvers
 
 | Solver | Implementation language | Kernel verified | Certificate | Verified checker | SMT-COMP standing |
 |--------|-------------------------|-----------------|-------------|------------------|-------------------|
@@ -59,15 +62,44 @@ certificate to check.
 | cvc5 | C++ | no | yes | yes | broad-leader |
 | Yices2 | C | no | partial | no | division-leader |
 | MathSAT5 | C++ | no | yes | no | mid-pack |
-| Bitwuzla | C++ | no | partial | no | division-leader |
 | veriT | C | no | yes | yes | niche |
-| SMTInterpol | Java | no | yes | no | division-leader |
 | Alt-Ergo | OCaml | no | partial | no | niche |
 | OpenSMT | C++ | no | yes | no | division-leader |
-| STP | C++ | no | no | no | niche |
-| Colibri2 | OCaml | no | no | no | niche |
 
 ## Notes
+
+On the `SMT-COMP standing` column: the tier is a coarse ordinal summary of how widely
+a solver won or reached the podium across SMT-COMP 2023–2025 single-query divisions,
+not a universal speed number. The vocabulary has four levels. `broad-leader` marks a
+solver that wins divisions across many distinct theories; `division-leader` marks a
+solver that leads one or a few specific divisions; `mid-pack` marks a competitive
+participant that recently won no division; `niche` marks a solver aimed at a specific
+use that is not a recent front-runner in the open competition. Every value traces to
+observed division results, and each solver's specific strengths are:
+
+- **Z3** and **cvc5** are the broad front-runners. cvc5 won the most single-query
+  divisions in both 2024 and 2025, spanning quantified and quantifier-free arithmetic,
+  bit-vectors, equality, and datatypes; Z3 (and its tuned variants Z3-alpha and
+  Z3-Noodler) led the arithmetic, nonlinear-arithmetic, and string divisions. These
+  two cover the widest range of theories.
+- **Yices2** is fast on quantifier-free fragments: it led `QF_Equality`,
+  `QF_Equality_NonLinearArith`, and `QF_LinearRealArith`, consistent with its
+  reputation for speed on quantifier-free linear-arithmetic and bit-vector problems.
+- **OpenSMT** leads the quantifier-free linear-arithmetic divisions
+  (`QF_LinearIntArith`, `QF_LinearRealArith`).
+- **MathSAT5** is a mature, competitive solver — strong in incremental solving and
+  interpolation — but won no single-query division in 2024–2025, hence `mid-pack`.
+- **veriT** and **Alt-Ergo** are `niche`: veriT is primarily a proof-producing solver,
+  and Alt-Ergo targets the Why3/SPARK/Frama-C toolchains. Neither is a recent SMT-COMP
+  division front-runner.
+- The bit-vector/floating-point leader **Bitwuzla** and the interpolation
+  division-leader **SMTInterpol** are theory-specialized and are listed in the
+  specialized-solvers section below, not here.
+
+The caveat bears repeating: SMT-COMP standings and solving speed are division- and
+benchmark-dependent. A solver that leads one theory can be weak in another, and the
+per-division winners shift year to year, so treat the tier as a summary of breadth of
+recent competitive results, not a portable speed measurement.
 
 The proof-checker landscape is what makes an unverified solver's answer trustworthy.
 The pattern is: solver emits certificate → independent checker validates it. The
@@ -93,43 +125,6 @@ principal checkers and formats:
   per-solver certificate formats named above (Alethe, LFSC, own resolution formats,
   etc.) are what each `Certificate` cell refers to.
 
-On the `SMT-COMP standing` column: the tier is a coarse ordinal summary of how widely
-a solver won or reached the podium across SMT-COMP 2023–2025 single-query divisions,
-not a universal speed number. The vocabulary has four levels. `broad-leader` marks a
-solver that wins divisions across many distinct theories; `division-leader` marks a
-solver that leads one or a few specific divisions; `mid-pack` marks a competitive
-participant that recently won no division; `niche` marks a solver aimed at a specific
-use that is not a recent front-runner in the open competition. Every value traces to
-observed division results, and each solver's specific strengths are:
-
-- **Z3** and **cvc5** are the broad front-runners. cvc5 won the most single-query
-  divisions in both 2024 and 2025, spanning quantified and quantifier-free arithmetic,
-  bit-vectors, equality, and datatypes; Z3 (and its tuned variants Z3-alpha and
-  Z3-Noodler) led the arithmetic, nonlinear-arithmetic, and string divisions. These
-  two cover the widest range of theories.
-- **Bitwuzla** is the leader in the bit-vector and floating-point divisions —
-  `QF_Bitvec`, `QF_Equality_Bitvec`, `FPArith`, and `QF_FPArith` — where it and its
-  variants took first place in 2024 and 2025. Its coverage is narrower than Z3/cvc5
-  (bit-vectors, floating-point, arrays, uninterpreted functions), so it is a dominant
-  division-leader rather than a broad-leader.
-- **Yices2** is fast on quantifier-free fragments: it led `QF_Equality`,
-  `QF_Equality_NonLinearArith`, and `QF_LinearRealArith`, consistent with its
-  reputation for speed on quantifier-free linear-arithmetic and bit-vector problems.
-- **OpenSMT** leads the quantifier-free linear-arithmetic divisions
-  (`QF_LinearIntArith`, `QF_LinearRealArith`), and **SMTInterpol** leads
-  `QF_Equality_LinearArith`; both are division-leaders confined to those fragments.
-- **MathSAT5** is a mature, competitive solver — strong in incremental solving and
-  interpolation — but won no single-query division in 2024–2025, hence `mid-pack`.
-- **veriT**, **Alt-Ergo**, **STP**, and **Colibri2** are `niche`: veriT is primarily a
-  proof-producing solver, Alt-Ergo targets the Why3/SPARK/Frama-C toolchains, STP
-  targets bit-vectors and arrays for symbolic-execution tools, and Colibri2 targets
-  floating-point and embedded reasoning. None is a recent SMT-COMP division front-runner.
-
-The caveat bears repeating: SMT-COMP standings and solving speed are division- and
-benchmark-dependent. A solver that leads one theory can be weak in another, and the
-per-division winners shift year to year, so treat the tier as a summary of breadth of
-recent competitive results, not a portable speed measurement.
-
 Per-solver details:
 
 - **Z3** has supported proof terms since 2008, using a large set of low-level
@@ -146,16 +141,8 @@ Per-solver details:
 - **MathSAT5** (reimplemented in C++) generates proofs, unsat cores, and Craig
   interpolants, tightly integrated with incremental solving; the proof object is in
   its own format rather than a shared standard.
-- **Bitwuzla** is a from-scratch C++ rewrite (2022) of the C solver Boolector, for
-  bit-vectors, floating-point, arrays, and uninterpreted functions. The released
-  solver produces unsat cores and, recently, bit-precise interpolants, but not a
-  full, independently checkable proof certificate — hence `partial`, correcting the
-  common assumption that it emits full proofs.
 - **veriT** is the origin of the Alethe format and emits Alethe proofs consumed by
   Isabelle/HOL and SMTCoq.
-- **SMTInterpol** (Java) is proof-producing over the quantifier-free combination of
-  uninterpreted functions and linear arithmetic; it extracts unsat cores and
-  inductive sequences of Craig interpolants from its resolution proofs.
 - **Alt-Ergo** (OCaml) is the automatic prover behind Why3, SPARK, Frama-C, and
   Atelier-B. Its proof output is limited: the historical `-proof` option now reports
   the named assertions used (an unsat-core-style artifact), not a fine-grained
@@ -163,11 +150,6 @@ Per-solver details:
 - **OpenSMT** (C++, USI) produces resolution proofs used to drive its interpolation
   engine (linear real arithmetic, uninterpreted functions, and others); the proof is
   its own format rather than a shared standard.
-- **STP** (C++) targets bit-vectors and arrays for symbolic-execution and
-  security tools; it is not a proof-producing solver.
-- **Colibri2** (OCaml) is a constraint-programming SMT solver in the Frama-C
-  Colibri family, aimed at floating-point and embedded reasoning; it does not emit a
-  checkable proof.
 
 On verified kernels: the closest points to a genuinely verified-kernel SMT solver are
 not general-purpose solvers. **Colibrics**, a sibling in the Colibri family, is a
@@ -178,14 +160,14 @@ the table is unverified and relies on the certificate-plus-checker path for trus
 
 ## Limited / theory-specialized solvers
 
-The eleven-solver table above lists solvers marketed as general-purpose SMT
-engines. A second population of solvers targets a single theory, or a narrow group
-of theories, and does not compete across SMT-LIB divisions. These are the tools you
-reach for when the problem is entirely nonlinear real arithmetic, entirely
-bit-vectors, entirely floating-point, or entirely strings, and a specialized
-decision procedure beats a general engine. The columns match the main table where
-they apply; `Certificate` uses the same three levels (`yes` = independently
-checkable proof object, `partial` = unsat core or engine trace only, `no` = none).
+The general-purpose table above lists solvers with broad theory coverage. A second
+population of solvers targets a single theory, or a narrow group of theories, and does
+not compete across the full range of SMT-LIB divisions. These are the tools you reach
+for when the problem is entirely nonlinear real arithmetic, entirely bit-vectors,
+entirely floating-point, or entirely strings, and a specialized decision procedure
+beats a general engine. The columns match the main table where they apply;
+`Certificate` uses the same three levels (`yes` = independently checkable proof object,
+`partial` = unsat core or engine trace only, `no` = none).
 
 | Solver | Theory / scope | Implementation language | Certificate | Notes |
 |--------|----------------|-------------------------|-------------|-------|
@@ -195,10 +177,14 @@ checkable proof object, `partial` = unsat core or engine trace only, `no` = none
 | raSAT | Polynomial inequality constraints over reals (QF_NRA) | OCaml | no | Interval over-approximation plus testing under-approximation, on top of MiniSAT; research prototype, effectively unmaintained. |
 | iSAT3 | Nonlinear + transcendental arithmetic; bounded model checker | C++ | no | Interval constraint propagation fused with CDCL; incomplete (may return `unknown` with an undecided interval box); research tool. |
 | Boolector | Bit-vectors, arrays, uninterpreted functions | C | partial | Unsat cores and SAT-layer DRUP; the direct predecessor of Bitwuzla. Development stopped; superseded by Bitwuzla. |
-| Colibri (COLIBRI) | Floating-point + constraint programming | Prolog (used as a Prolog library) | no | The ancestor of the Colibri family (in development since 2000); reimplemented in OCaml as Colibri2, which is in the general table. |
+| Bitwuzla | Bit-vectors, floating-point, arrays, UF | C++ | partial | From-scratch 2022 C++ rewrite of Boolector; SMT-COMP leader in the QF_BV and floating-point divisions; unsat cores and bit-precise interpolants, no full certificate; no verified checker. Moved here from the general table. |
+| STP | Bit-vectors + arrays | C++ | no | Bit-blasting solver for symbolic-execution and security tools; no proof output; a niche SMT-COMP entrant. Moved here from the general table. |
+| Colibri (COLIBRI) | Floating-point + constraint programming | Prolog (used as a Prolog library) | no | The ancestor of the Colibri family (in development since 2000); reimplemented in OCaml as Colibri2. |
+| Colibri2 | Floating-point + constraint programming | OCaml | no | OCaml successor of COLIBRI (above); high-level interval/flag reasoning per value rather than bit-blasting; Colibrics is its formally proved sibling. Moved here from the general table. |
 | Z3-Noodler | Strings (word equations + regular constraints) | C++ | no | A fork of Z3 that replaces the string theory solver with a stabilization-based automata procedure on the Mata library (VeriFIT, Brno); actively developed. |
 | OSTRICH | Strings (concatenation, reverse, replaceAll, …) | Scala | no | Automata-based decision procedure built as a library on top of Princess; actively developed (OSTRICH2 is the current line). |
 | Princess | Presburger arithmetic + uninterpreted predicates; also arrays, ADTs, bit-vectors, strings, heaps | Scala | partial | An interpolating first-order prover; produces internal proofs and Craig interpolants, but no shared external certificate format. It is the SMT back end OSTRICH extends. |
+| SMTInterpol | QF uninterpreted functions + linear arithmetic (interpolation) | Java | yes | Interpolating solver leading the QF_Equality_LinearArith division; emits its own resolution-proof format and Craig interpolants; no verified external checker. Moved here from the general table. |
 
 Per-solver detail:
 
@@ -235,12 +221,24 @@ Per-solver detail:
   arrays. Its active development has stopped; the project itself states it is
   succeeded by Bitwuzla. It produces unsat cores and SAT-level DRUP, hence
   `partial`.
+- **Bitwuzla** (C++) is a from-scratch 2022 rewrite of Boolector, covering
+  bit-vectors, floating-point, arrays, and uninterpreted functions — but no
+  arithmetic theory. It leads the bit-vector and floating-point SMT-COMP divisions
+  (`QF_Bitvec`, `QF_Equality_Bitvec`, `FPArith`, `QF_FPArith`). It produces unsat
+  cores and, recently, bit-precise interpolants, but not a full independently
+  checkable certificate — hence `partial`.
+- **STP** (C++) targets bit-vectors and arrays for symbolic-execution and security
+  tools; it bit-blasts and is not a proof-producing solver.
 - **Colibri (COLIBRI)** is the original constraint-programming solver of the
   Frama-C Colibri family, in development since 2000 and used as a Prolog library
   by other tools. It maintains high-level interval and flag information per
-  floating-point value rather than bit-blasting. Colibri2 (in the general table)
-  is its OCaml reimplementation, and Colibrics is the formally proved sibling
-  cited in the verified-kernel note above.
+  floating-point value rather than bit-blasting. Colibri2 is its OCaml
+  reimplementation, and Colibrics is the formally proved sibling cited in the
+  verified-kernel note above.
+- **Colibri2** (OCaml) is the OCaml successor of COLIBRI, the constraint-programming
+  SMT solver of the Frama-C Colibri family, aimed at floating-point and embedded
+  reasoning; it maintains high-level interval and flag information per value rather
+  than bit-blasting, and does not emit a checkable proof.
 - **Z3-Noodler** (C++) is a fork of Z3 v4.15.x that swaps Z3's string theory
   solver for a stabilization-based automata procedure implemented on the Mata
   automata library. It inherits Z3's non-string reasoning; its string solver adds
@@ -254,44 +252,47 @@ Per-solver detail:
   arrays, nonlinear arithmetic, rationals, bit-vectors, algebraic datatypes,
   heaps, and strings. It produces internal proofs and Craig interpolants but no
   shared external certificate format, so `partial`. OSTRICH is built on it.
+- **SMTInterpol** (Java) is proof-producing over the quantifier-free combination of
+  uninterpreted functions and linear arithmetic, and leads the
+  `QF_Equality_LinearArith` division. It extracts unsat cores and inductive
+  sequences of Craig interpolants from its resolution proofs, but there is no
+  verified external checker for its format.
 
-A caveat on the general/limited boundary: the split between the eleven-solver table
-and this one is not clean, because several solvers currently listed as
-general-purpose are themselves theory-limited. **Bitwuzla** covers only
-bit-vectors, floating-point, arrays, and uninterpreted functions — it has no
-arithmetic theory. **STP** covers only bit-vectors and arrays (it appears in the
-main table as a `niche` division entrant, but by scope it belongs here alongside
-Boolector). **Colibri2** is a floating-point and constraint-programming solver, the
-OCaml successor of the COLIBRI listed just above. **SMTInterpol** is confined to
-quantifier-free uninterpreted functions plus linear arithmetic, with its design
-centered on interpolation. These four sit in the main table for historical or
-SMT-COMP-participation reasons, not because their theory coverage is broad. The
-rows are left in place here; whether to relocate them is a maintenance decision.
+These four — **Bitwuzla**, **STP**, **Colibri2**, and **SMTInterpol** — were moved
+here from the general-purpose table because their theory coverage is narrow: Bitwuzla
+and STP are bit-vector/array (and, for Bitwuzla, floating-point) solvers, Colibri2 is
+floating-point and constraint-programming, and SMTInterpol is confined to
+quantifier-free uninterpreted functions plus linear arithmetic with an interpolation
+focus. Bitwuzla and SMTInterpol remain strong SMT-COMP entrants that lead specific
+divisions, but they decide only their own theories, not the broad range the
+general-purpose solvers cover.
 
 ## Sources
 
+- Computer Language Benchmarks Game / SMT-COMP results index — https://smt-comp.github.io/2024/results/
+- SMT-COMP 2025 single-query results — https://smt-comp.github.io/2025/results/results-single-query/
+- SMT-COMP 2024 single-query results — https://smt-comp.github.io/2024/results/results-single-query/
+- SMT-COMP 2024 largest-contribution ranking — https://smt-comp.github.io/2024/results/largest-contribution-single-query/
+- SMT-COMP 2023 slides — https://smt-workshop.cs.uiowa.edu/2023/slides/smtcomp.pdf
 - Z3 proof logs and proof terms — https://microsoft.github.io/z3guide/programming/Proof%20Logs/ ; "Proofs in Satisfiability Modulo Theories" — https://leodemoura.github.io/files/SMTProofs.pdf ; Z3 Theorem Prover — https://en.wikipedia.org/wiki/Z3_Theorem_Prover
 - cvc5 proof production (Alethe, LFSC, Lean) — https://cvc5.github.io/docs/cvc5-1.0.2/proofs/proofs.html ; Alethe output — https://cvc5.github.io/docs/cvc5-1.0.0/proofs/output_alethe.html ; cvc5 system description — https://hanielbarbosa.com/papers/tacas2022.pdf
-- Yices2 unsat proofs and cores — https://yices.csl.sri.com/papers/manual.pdf ; "Unsatisfiability Proofs in the Yices 2 SMT Solver" (2025) — https://repositum.tuwien.at/bitstream/20.500.12708/216476/1/Bertalanic%20Martina%20-%202025%20-%20Unsatisfiability%20Proofs%20in%20the%20Yices%202%20SMT%20Solver.pdf
+- Yices2 unsat proofs and cores — https://yices.csl.sri.com/papers/manual.pdf
 - MathSAT5 (proofs, interpolants, C++ reimplementation) — https://mathsat.fbk.eu/ ; "The MathSAT5 SMT Solver" — https://link.springer.com/chapter/10.1007/978-3-642-36742-7_7
-- Bitwuzla (C++ rewrite, options) — https://github.com/bitwuzla/bitwuzla ; CLI options — https://bitwuzla.github.io/docs/binary.html ; system description CAV 2023 — https://cs.stanford.edu/~preiner/publications/2023/NiemetzP-CAV23.pdf ; "Bit-Precise Interpolation in Bitwuzla" — https://link.springer.com/chapter/10.1007/978-3-032-22752-2_4
 - veriT and Alethe — https://www.verit-solver.org/ ; "The Alethe Proof Format" — https://verit.loria.fr/documentation/alethe-spec.pdf
-- SMTInterpol (Java, interpolants, proofs) — https://ultimate.informatik.uni-freiburg.de/smtinterpol/ ; "SMTInterpol: an Interpolating SMT Solver" — https://jhoenicke.de/docs/chn12-spin.pdf
 - Alt-Ergo (OCaml, proof/unsat-core options) — https://alt-ergo.ocamlpro.com/ ; https://en.wikipedia.org/wiki/Alt-Ergo
 - OpenSMT (C++, proofs, interpolants) — https://github.com/usi-verification-and-security/opensmt ; SMT-COMP 2020 description — https://smt-comp.github.io/2020/system-descriptions/OpenSMT.pdf
-- STP (C++, bit-vectors/arrays) — https://github.com/stp/stp ; "A Solver for a Theory of Strings and Bit-vectors" — https://arxiv.org/pdf/1605.09446
-- Colibri family (Colibri2 in OCaml; Colibrics formally proved) — https://colibri.frama-c.com/
 - Carcara Alethe checker — https://link.springer.com/chapter/10.1007/978-3-031-30823-9_19
 - SMTCoq — https://smtcoq.github.io/capi.html
 - DRAT-based bit-vector proofs — https://arxiv.org/abs/1907.00087 ; CoqQFBV certified QF_BV solver — https://link.springer.com/chapter/10.1007/978-3-030-81688-9_7
-- dReal (C++, δ-complete, ODEs, proofs) — http://dreal.github.io/ ; "dReal: An SMT Solver for Nonlinear Theories over the Reals" — https://link.springer.com/chapter/10.1007/978-3-642-38574-2_14 ; dreal4 — https://github.com/dreal/dreal4
-- MetiTarski (Standard ML, elementary functions, CAD oracle) — https://www.cl.cam.ac.uk/~lp15/papers/Arith/ ; "MetiTarski: An Automatic Prover for the Elementary Functions" — https://www.cl.cam.ac.uk/~lp15/papers/Arith/calculemus2008.pdf ; Metis (Standard ML) — https://www.gilith.com/metis/
-- SMT-RAT (C++ toolbox, CAD/VS, CArL) — https://smt-comp.github.io/2020/system-descriptions/SMT-RAT.pdf ; "SMT-RAT: An Open Source C++ Toolbox for Strategic and Parallel SMT Solving" — https://link.springer.com/chapter/10.1007/978-3-319-24318-4_26
-- raSAT (OCaml on MiniSAT, interval + testing) — "raSAT: an SMT solver for polynomial constraints" — https://link.springer.com/article/10.1007/s10703-017-0284-9
-- iSAT3 (C++, interval constraint propagation, bounded model checker) — "Implication Graph Compression inside the SMT Solver iSAT3" — https://www.semanticscholar.org/paper/06e898cca568bad925c83276a24ee3aa0111d992
-- Boolector (C, bit-vectors/arrays/UF; succeeded by Bitwuzla) — https://github.com/Boolector/boolector ; "Boolector: An Efficient SMT Solver for Bit-Vectors and Arrays" — https://link.springer.com/chapter/10.1007/978-3-642-00768-2_16
-- Colibri family (COLIBRI ancestor as a Prolog library; Colibri2 OCaml; Colibrics proved) — https://colibri.frama-c.com/ ; "An efficient constraint based framework for handling floating point SMT problems" — https://arxiv.org/pdf/2002.12441
-- Z3-Noodler (C++ Z3 fork, automata strings on Mata) — https://github.com/VeriFIT/z3-noodler ; "Z3-Noodler: An Automata-based String Solver" — https://link.springer.com/chapter/10.1007/978-3-031-57246-3_2
-- OSTRICH (Scala, automata strings on Princess) — https://github.com/uuverifiers/ostrich ; "OSTRICH2: Solver for Complex String Constraints" — https://arxiv.org/pdf/2506.14363
-- Princess (Scala, Presburger + UF, arrays, interpolation) — http://www.philipp.ruemmer.org/princess.shtml ; https://github.com/uuverifiers/princess
-- SMT-COMP division results (basis for the `SMT-COMP standing` column) — 2025 single-query results https://smt-comp.github.io/2025/results/results-single-query/ ; 2024 single-query results https://smt-comp.github.io/2024/results/results-single-query/ ; 2024 largest-contribution ranking https://smt-comp.github.io/2024/results/largest-contribution-single-query/ ; 2023 competition slides https://smt-workshop.cs.uiowa.edu/2023/slides/smtcomp.pdf ; results index https://smt-comp.github.io/2024/results/
+- dReal — http://dreal.github.io/ ; "dReal: An SMT Solver for Nonlinear Theories over the Reals" — https://link.springer.com/chapter/10.1007/978-3-642-38574-2_14 ; https://github.com/dreal/dreal4
+- MetiTarski — https://www.cl.cam.ac.uk/~lp15/papers/Arith/ ; https://www.cl.cam.ac.uk/~lp15/papers/Arith/calculemus2008.pdf ; Metis — https://www.gilith.com/metis/
+- SMT-RAT — https://smt-comp.github.io/2020/system-descriptions/SMT-RAT.pdf ; https://link.springer.com/chapter/10.1007/978-3-319-24318-4_26
+- raSAT — https://link.springer.com/article/10.1007/s10703-017-0284-9
+- iSAT3 — https://www.semanticscholar.org/paper/06e898cca568bad925c83276a24ee3aa0111d992
+- Boolector / Bitwuzla — https://github.com/Boolector/boolector ; https://link.springer.com/chapter/10.1007/978-3-642-00768-2_16 ; Bitwuzla — https://github.com/bitwuzla/bitwuzla ; CAV 2023 — https://cs.stanford.edu/~preiner/publications/2023/NiemetzP-CAV23.pdf
+- STP — https://github.com/stp/stp ; "A Solver for a Theory of Strings and Bit-vectors" — https://arxiv.org/pdf/1605.09446
+- Colibri family (Colibri2 in OCaml; Colibrics formally proved) — https://colibri.frama-c.com/ ; https://arxiv.org/pdf/2002.12441
+- Z3-Noodler — https://github.com/VeriFIT/z3-noodler ; https://link.springer.com/chapter/10.1007/978-3-031-57246-3_2
+- OSTRICH — https://github.com/uuverifiers/ostrich ; https://arxiv.org/pdf/2506.14363
+- Princess — http://www.philipp.ruemmer.org/princess.shtml ; https://github.com/uuverifiers/princess
+- SMTInterpol — https://ultimate.informatik.uni-freiburg.de/smtinterpol/ ; "SMTInterpol: an Interpolating SMT Solver" — https://jhoenicke.de/docs/chn12-spin.pdf
