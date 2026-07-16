@@ -1,2 +1,5 @@
 # Emacs backup files — kept on disk, never committed.
 *~
+
+# Cloned language-implementation source repos — never committed.
+sources/
