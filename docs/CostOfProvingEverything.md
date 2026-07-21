@@ -6,12 +6,16 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 }
 </style>
 
+## 1. Semantics
+
 | Semantics |
 |-----------|
 | Proof Assistant |
 | Certificate Checker |
 | PL semantics framework |
 | PL semantics proof |
+
+## 2. PL
 
 | PL |
 |----|
@@ -22,9 +26,13 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | test tools |
 | performance tools |
 
+## 3. Std Library
+
 | Std Library |
 |-------------|
 | std library |
+
+## 4. OS
 
 | OS |
 |----|
