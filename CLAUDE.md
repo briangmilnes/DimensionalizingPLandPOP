@@ -11,3 +11,8 @@ computer science terms and avoid analogies and metaphors. Any other project may 
 the same ruleset by adding the identical import line below to its own `CLAUDE.md`.
 
 @~/projects/ComputAItionalThinking/ComputAItionalThinkingRules.md
+
+This project also adopts the GRASE process ruleset (rounds, plans, reports, file
+naming) for orchestrating multi-agent work, imported by reference below.
+
+@~/projects/GRASE/CLAUDE.md
