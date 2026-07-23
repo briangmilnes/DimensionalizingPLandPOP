@@ -23,9 +23,9 @@ recorded in this repository and are cited to the measuring document
 Unverified figures are order-of-magnitude counts from public code-size reports (Open
 Hub, project sites) and carry a `~`. A cell reads `none` where no formally verified
 instance exists, and `—` where no defensible size figure is available. Several
-verified entries are research systems not measured in this repository (FSCQ, SeKVM,
-miTLS, Verdi, Candle); they are named and marked as research rather than reported as
-`none`, because a verified instance genuinely exists.
+verified entries are research systems not measured in this repository (DICE\*, FSCQ,
+SeKVM, miTLS, Verdi, Candle); they are named and marked as research rather than
+reported as `none`, because a verified instance genuinely exists.
 
 ## 1. Semantics
 
@@ -61,7 +61,7 @@ miTLS, Verdi, Candle); they are named and marked as research rather than reporte
 
 | OS | LOC estimate | Best proven example | Best unproven example |
 |----|--------------|---------------------|-----------------------|
-| boot | ~50k–500k | none — verified-bootloader work is research-only | GRUB / U-Boot (~10⁵) |
+| boot | ~50k–500k | DICE\* — formally verified DICE *measured-boot* implementation in F\*/Low\* (functionally correct, memory-safe, side-channel-resistant; includes a verified X.509 certificate-creation library; generates C), USENIX Security 2021 (research, `verified-HRoT/dice-star`) | GRUB / U-Boot (~10⁵) |
 | OS kernel | ~10⁴ kernel C / ~10⁷ monolithic | seL4 — functional-correctness proof, l4v 803,647 Isabelle over a ~10k-line kernel C (`ProofsOfProgrammingLanguagesSizes.md`) | Linux — ~40M lines (2024) |
 | OS networking | ~1M+ | none in production — verified TCP/IP stacks are research | Linux `net/` stack / lwIP (~10⁶) |
 | OS file system | ~30k verified / ~10⁵ production | FSCQ — certified crash-safe file system in Rocq, ~30,000 lines (research, not in repo docs) | Linux ext4 + VFS (~10⁵) |
