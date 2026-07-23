@@ -63,11 +63,11 @@ reported as `none`, because a verified instance genuinely exists.
 |----|--------------|---------------------|-----------------------|
 | boot | ~50k–500k | DICE\* — formally verified DICE *measured-boot* implementation in F\*/Low\* (functionally correct, memory-safe, side-channel-resistant; includes a verified X.509 certificate-creation library; generates C), USENIX Security 2021 (research, `verified-HRoT/dice-star`) | GRUB / U-Boot (~10⁵) |
 | OS kernel | ~10⁴ kernel C / ~10⁷ monolithic | seL4 — functional-correctness proof, l4v 803,647 Isabelle over a ~10k-line kernel C (`ProofsOfProgrammingLanguagesSizes.md`) | Linux — ~40M lines (2024) |
-| OS networking | ~1M+ | none in production — verified TCP/IP stacks are research | Linux `net/` stack / lwIP (~10⁶) |
+| OS networking | ~1M+ | EverParse (F\*, LowParse + QuackyDucky) — verified zero-copy packet parsers/validators, **in production**: every network packet through Windows Hyper-V / Azure is validated by EverParse-generated C (also `ebpf-for-windows`, TLS 1.3 / QUIC record layers). Full verified TCP/IP *logic* (routing, congestion control) remains research | Linux `net/` stack / lwIP (~10⁶) |
 | OS file system | ~30k verified / ~10⁵ production | FSCQ — certified crash-safe file system in Rocq, ~30,000 lines (research, not in repo docs) | Linux ext4 + VFS (~10⁵) |
 | OS driver system | ~2×10⁷ | none | Linux `drivers/` — the majority of the ~40M-line kernel tree |
 | Hypervisor | ~50k–1M | SeKVM — verified core of a KVM hypervisor (research, not in repo docs); otherwise none in production | KVM / Xen (~10⁵–10⁶) |
-| Firewall | ~20k–100k | none | Linux netfilter (iptables/nftables) / OpenBSD pf (—) |
+| Firewall | ~20k–100k | EverParse-generated verified packet parsers deployed in `ebpf-for-windows` (eBPF packet filtering, **in production**); no fully verified firewall engine yet | Linux netfilter (iptables/nftables) / OpenBSD pf (—) |
 
 ## 4. Utilities
 
