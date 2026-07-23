@@ -55,7 +55,8 @@ reported as `none`, because a verified instance genuinely exists.
 |-------------|--------------|---------------------|-----------------------|
 | Core Library | ~24k–200k | CakeML `basis` — verified base library, 24,006 HOL4 (`PLSizes.md`, `ProofsOfProgrammingLanguagesSizes.md`) | Rust `core`+`alloc`+`std` — ~208,981 (`PLSizes.md`) |
 | Alloc Library | ~1k–50k | none in production — VST verifies a `malloc`/`free` implementation in Rocq as a research case study | Rust `alloc` / glibc `malloc` / jemalloc — ~10⁴, part of the base library above |
-| Std Library | ~200k–1.1M | CakeML `basis`, 24,006 (the only fully verified standard library); HACL\*/EverCrypt verifies the crypto library, 162,492 F\* (`ProofsOfProgrammingLanguagesSizes.md`) | glibc — ~1,104,158 C (`PLSizes.md`) |
+| Std Library | ~200k–1.1M | CakeML `basis`, 24,006 — the only fully verified general-purpose standard library (`ProofsOfProgrammingLanguagesSizes.md`) | glibc — ~1,104,158 C (`PLSizes.md`) |
+| Cryptography | ~100k–500k | HACL\*/EverCrypt — verified cryptographic library, 162,492 F\*, **in production** (Firefox NSS, Linux kernel, mbedTLS); Fiat-Crypto verified field arithmetic in BoringSSL; ValeCrypt verified assembly (`ProofsOfProgrammingLanguagesSizes.md`) | OpenSSL (~500k) / libsodium / BoringSSL |
 
 ## 4. OS
 
