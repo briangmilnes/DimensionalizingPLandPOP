@@ -3,3 +3,6 @@
 
 # Cloned language-implementation source repos — never committed.
 sources/
+
+# LibreOffice lock files — present only while a document is open.
+.~lock.*#
