@@ -53,5 +53,5 @@ body, .markdown-body, article, main, .markdown-preview, .markdown-preview-view {
 | 15 | [ProofsOfProgrammingLanguagesSizes.md](docs/ProofsOfProgrammingLanguagesSizes.md) | Measured sizes of the verified language developments (CompCert, CakeML, VST, seL4, RustBelt, …) split into compiler / core library / proof via validated heuristics |
 | 16 | [CostOfProvingEverything.md](docs/CostOfProvingEverything.md) | Defines "everything" to prove as one-column tables across eight sections (Semantics, PL, Std Library, OS, Utilities, Application Stack, Distributed Services, POP) |
 | 17 | [ExamplesOfEverything.md](docs/ExamplesOfEverything.md) | For each category: LOC estimate, best formally-verified example, and best production (unverified) example |
-| 18 | [BestProvenExamplesSizes.md](docs/BestProvenExamplesSizes.md) | Best verified example per category with In-Production (Yes/No) and proven-exec (PLoEC), proof (LoP), unproven-exec (UPLoEC) line counts, with section and grand totals |
+| 18 | [BestProvenExamplesSizes.md](docs/BestProvenExamplesSizes.md) | Best verified example per category, sized as proven-exec (PLoEC), proof (LoP), unproven-exec-inside (UPLoEC), and estimated-lines-to-prove (EstLoC2P); Iris/CompCertELF/Verus measured; section and grand totals show ~200k proven vs ~31M still to prove |
 
